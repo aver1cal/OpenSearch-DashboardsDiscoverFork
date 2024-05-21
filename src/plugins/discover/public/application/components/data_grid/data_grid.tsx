@@ -18,6 +18,7 @@ import { DOC_HIDE_TIME_COLUMN_SETTING, SAMPLE_SIZE_SETTING } from '../../../../c
 import { UI_SETTINGS } from '../../../../../data/common';
 import { SortOrder } from '../../../saved_searches/types';
 import { useToolbarOptions } from './data_grid_toolbar';
+import { CsvColumnProp, DataGridExportButton } from './data_grid_table_exporter';
 
 export interface DataGridProps {
   columns: string[];
@@ -28,6 +29,7 @@ export interface DataGridProps {
   sort: SortOrder[];
   isToolbarVisible?: boolean;
   isContextView?: boolean;
+  hideInspect?: boolean;
 }
 
 const DataGridUI = ({
@@ -39,6 +41,7 @@ const DataGridUI = ({
   rows,
   isToolbarVisible = true,
   isContextView = false,
+  hideInspect,
 }: DataGridProps) => {
   const services = getServices();
   const rowCount = useMemo(() => (rows ? rows.length : 0), [rows]);
@@ -122,31 +125,38 @@ const DataGridUI = ({
   );
 
   const leadingControlColumns = useMemo(() => {
-    return [
-      {
-        id: 'inspectCollapseColumn',
-        headerCellRender: () => null,
-        rowCellRender: DocViewInspectButton,
-        width: 40,
-      },
-    ];
-  }, []);
+    return !hideInspect
+      ? [
+          {
+            id: 'inspectCollapseColumn',
+            headerCellRender: () => null,
+            rowCellRender: DocViewInspectButton,
+            width: 40,
+          },
+        ]
+      : [];
+  }, [hideInspect]);
 
   return (
-    <EuiDataGrid
-      aria-labelledby="aria-labelledby"
-      columns={displayedTableColumns}
-      columnVisibility={dataGridTableColumnsVisibility}
-      leadingControlColumns={leadingControlColumns}
-      data-test-subj="docTable"
-      pagination={pagination}
-      renderCellValue={renderCellValue}
-      rowCount={rowCount}
-      sorting={sorting}
-      toolbarVisibility={isToolbarVisible ? toolbarOptions : false}
-      rowHeightsOptions={rowHeightsOptions}
-      className="discoverDataGrid"
-    />
+    <>
+      <DataGridExportButton
+        {...{ rows, columns: displayedTableColumns as CsvColumnProp[], legacy: false }}
+      />
+      <EuiDataGrid
+        aria-labelledby="aria-labelledby"
+        columns={displayedTableColumns}
+        columnVisibility={dataGridTableColumnsVisibility}
+        leadingControlColumns={leadingControlColumns}
+        data-test-subj="docTable"
+        pagination={pagination}
+        renderCellValue={renderCellValue}
+        rowCount={rowCount}
+        sorting={sorting}
+        toolbarVisibility={isToolbarVisible ? toolbarOptions : false}
+        rowHeightsOptions={rowHeightsOptions}
+        className="discoverDataGrid"
+      />
+    </>
   );
 };
 

@@ -21,7 +21,12 @@ import { filterColumns } from '../utils/filter_columns';
 import { DEFAULT_COLUMNS_SETTING, MODIFY_COLUMNS_ON_SWITCH } from '../../../../common';
 import { OpenSearchSearchHit } from '../../../application/doc_views/doc_views_types';
 import './discover_canvas.scss';
-import { getNewDiscoverSetting, setNewDiscoverSetting } from '../../components/utils/local_storage';
+import {
+  getDiscoverInspectSetting,
+  getNewDiscoverSetting,
+  setDiscoverInspectSetting,
+  setNewDiscoverSetting,
+} from '../../components/utils/local_storage';
 
 // eslint-disable-next-line import/no-default-export
 export default function DiscoverCanvas({ setHeaderActionMenu, history }: ViewProps) {
@@ -99,6 +104,7 @@ export default function DiscoverCanvas({ setHeaderActionMenu, history }: ViewPro
 
   const [isOptionsOpen, setOptionsOpen] = useState(false);
   const [useLegacy, setUseLegacy] = useState(!getNewDiscoverSetting(storage));
+  const [disableInspect, setDisableInspect] = useState(getDiscoverInspectSetting(storage));
   const DiscoverOptions = () => (
     <EuiPopover
       button={
@@ -121,7 +127,7 @@ export default function DiscoverCanvas({ setHeaderActionMenu, history }: ViewPro
             id: 0,
             title: 'Options',
             content: (
-              <EuiPanel>
+              <EuiPanel paddingSize="s">
                 <EuiSwitch
                   label="Enable legacy Discover"
                   checked={useLegacy}
@@ -130,6 +136,17 @@ export default function DiscoverCanvas({ setHeaderActionMenu, history }: ViewPro
                     const checked = e.target.checked;
                     setUseLegacy(checked);
                     setNewDiscoverSetting(!checked, storage);
+                    window.location.reload();
+                  }}
+                />
+                <EuiSwitch
+                  label="Disable expand document"
+                  checked={disableInspect}
+                  data-test-subj="discoverOptionsDocumentSwitch"
+                  onChange={(e) => {
+                    const checked = e.target.checked;
+                    setDisableInspect(checked);
+                    setDiscoverInspectSetting(checked, storage);
                     window.location.reload();
                   }}
                 />
