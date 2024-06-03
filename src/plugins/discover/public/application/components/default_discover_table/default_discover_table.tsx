@@ -195,11 +195,9 @@ const DefaultDiscoverTableUI = ({
              * First cell is skipped because it has a dimention set already, and the last cell is skipped to allow it to
              * grow as much as the table needs.
              */
-            tableElement
-              .querySelectorAll('thead > tr > th:not(:first-child):not(:last-child)')
-              .forEach((th) => {
-                (th as HTMLTableCellElement).style.width = th.getBoundingClientRect().width + 'px';
-              });
+            tableElement.querySelectorAll('thead > tr > th:not(:first-child)').forEach((th) => {
+              (th as HTMLTableCellElement).style.width = th.getBoundingClientRect().width + 'px';
+            });
 
             tableElement.style.tableLayout = 'fixed';
           }
