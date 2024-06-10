@@ -12,7 +12,7 @@ import { DocViewFilterFn, OpenSearchSearchHit } from '../../doc_views/doc_views_
 import { buildColumns } from '../../utils/columns';
 import { DefaultDiscoverTable } from '../default_discover_table/default_discover_table';
 import { DataGrid } from './data_grid';
-import { getNewDiscoverSetting } from '../utils/local_storage';
+import { getDiscoverInspectSetting, getNewDiscoverSetting } from '../utils/local_storage';
 import { SortOrder } from '../../../saved_searches/types';
 
 export interface DataGridTableProps {
@@ -70,6 +70,7 @@ export const DataGridTable = ({
   }
 
   const newDiscoverEnabled = getNewDiscoverSetting(services.storage);
+  const inspectDisabled = getDiscoverInspectSetting(services.storage);
 
   const panelContent = newDiscoverEnabled ? (
     <DataGrid
@@ -81,6 +82,7 @@ export const DataGridTable = ({
       onSetColumns={onSetColumns}
       isToolbarVisible={isToolbarVisible}
       isContextView={isContextView}
+      hideInspect={inspectDisabled}
     />
   ) : (
     <DefaultDiscoverTable
@@ -96,6 +98,7 @@ export const DataGridTable = ({
       onFilter={onFilter}
       onClose={() => setInspectedHit(undefined)}
       showPagination={showPagination}
+      hideInspect={inspectDisabled}
       scrollToTop={scrollToTop}
     />
   );

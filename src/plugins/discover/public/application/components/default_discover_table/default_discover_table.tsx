@@ -6,7 +6,7 @@
 import './_doc_table.scss';
 
 import React, { useEffect, useMemo, useRef, useState, useCallback } from 'react';
-import { EuiButtonEmpty, EuiCallOut, EuiProgress } from '@elastic/eui';
+import { EuiButtonEmpty, EuiCallOut, EuiFlexGroup, EuiFlexItem, EuiProgress } from '@elastic/eui';
 import { FormattedMessage } from '@osd/i18n/react';
 import { TableHeader } from './table_header';
 import { DocViewFilterFn, OpenSearchSearchHit } from '../../doc_views/doc_views_types';
@@ -21,6 +21,7 @@ import {
   SORT_DEFAULT_ORDER_SETTING,
 } from '../../../../common';
 import { UI_SETTINGS } from '../../../../../data/common';
+import { CsvColumnProp, DataGridExportButton } from '../data_grid/data_grid_table_exporter';
 
 export interface DefaultDiscoverTableProps {
   columns: string[];
@@ -35,6 +36,7 @@ export interface DefaultDiscoverTableProps {
   onFilter: DocViewFilterFn;
   onClose?: () => void;
   showPagination?: boolean;
+  hideInspect?: boolean;
   scrollToTop?: () => void;
 }
 
@@ -55,6 +57,7 @@ const DefaultDiscoverTableUI = ({
   onFilter,
   onClose,
   showPagination,
+  hideInspect,
   scrollToTop,
 }: DefaultDiscoverTableProps) => {
   const services = getServices();
@@ -177,48 +180,57 @@ const DefaultDiscoverTableUI = ({
   const tableLayoutRequestFrameRef = useRef<number>(0);
 
   useEffect(() => {
-    if (tableElement) {
-      // Load the first batch of rows and adjust the columns to the contents
-      tableElement.style.tableLayout = 'auto';
+    setTimeout(() => {
+      if (tableElement) {
+        // Load the first batch of rows and adjust the columns to the contents
+        tableElement.style.tableLayout = 'auto';
 
-      tableLayoutRequestFrameRef.current = requestAnimationFrame(() => {
-        if (tableElement) {
-          /* Get the widths for each header cell which is the column's width automatically adjusted to the content of
-           * the column. Apply the width as a style and change the layout to fixed. This is to
-           *   1) prevent columns from changing size when more rows are added, and
-           *   2) speed of rendering time of subsequently added rows.
-           *
-           * First cell is skipped because it has a dimention set already, and the last cell is skipped to allow it to
-           * grow as much as the table needs.
-           */
-          tableElement
-            .querySelectorAll('thead > tr > th:not(:first-child):not(:last-child)')
-            .forEach((th) => {
+        tableLayoutRequestFrameRef.current = requestAnimationFrame(() => {
+          if (tableElement) {
+            /* Get the widths for each header cell which is the column's width automatically adjusted to the content of
+             * the column. Apply the width as a style and change the layout to fixed. This is to
+             *   1) prevent columns from changing size when more rows are added, and
+             *   2) speed of rendering time of subsequently added rows.
+             *
+             * First cell is skipped because it has a dimention set already, and the last cell is skipped to allow it to
+             * grow as much as the table needs.
+             */
+            tableElement.querySelectorAll('thead > tr > th:not(:first-child)').forEach((th) => {
               (th as HTMLTableCellElement).style.width = th.getBoundingClientRect().width + 'px';
             });
 
-          tableElement.style.tableLayout = 'fixed';
-        }
-      });
-    }
+            tableElement.style.tableLayout = 'fixed';
+          }
+        });
 
-    return () => cancelAnimationFrame(tableLayoutRequestFrameRef.current);
+        return () => cancelAnimationFrame(tableLayoutRequestFrameRef.current);
+      }
+    }, 300);
   }, [columns, tableElement]);
 
   return (
     indexPattern && (
       <>
-        {showPagination ? (
-          <Pagination
-            pageCount={pageCount}
-            activePage={activePage}
-            goToPage={goToPage}
-            startItem={currentRowCounts.startRow + 1}
-            endItem={currentRowCounts.endRow}
-            totalItems={hits}
-            sampleSize={sampleSize}
-          />
-        ) : null}
+        <EuiFlexGroup justifyContent="spaceBetween">
+          <EuiFlexItem grow={false}>
+            <DataGridExportButton
+              {...{ rows, columns: displayedColumns as CsvColumnProp[], legacy: true }}
+            />
+          </EuiFlexItem>
+          {showPagination ? (
+            <EuiFlexItem grow={true}>
+              <Pagination
+                pageCount={pageCount}
+                activePage={activePage}
+                goToPage={goToPage}
+                startItem={currentRowCounts.startRow + 1}
+                endItem={currentRowCounts.endRow}
+                totalItems={hits}
+                sampleSize={sampleSize}
+              />
+            </EuiFlexItem>
+          ) : null}
+        </EuiFlexGroup>
         <table data-test-subj="docTable" className="osd-table table" ref={tableRef}>
           <thead>
             <TableHeader
@@ -229,6 +241,7 @@ const DefaultDiscoverTableUI = ({
               onMoveColumn={onMoveColumn}
               onRemoveColumn={onRemoveColumn}
               sortOrder={sort}
+              inspect={!hideInspect}
             />
           </thead>
           <tbody>
@@ -245,6 +258,7 @@ const DefaultDiscoverTableUI = ({
                     onFilter={onFilter}
                     onClose={onClose}
                     isShortDots={isShortDots}
+                    inspect={!hideInspect}
                   />
                 );
               }

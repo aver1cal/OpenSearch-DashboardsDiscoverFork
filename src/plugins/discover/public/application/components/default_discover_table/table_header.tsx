@@ -26,6 +26,7 @@ interface Props {
   onRemoveColumn?: (name: string) => void;
   onMoveColumn?: (colName: string, destination: number) => void;
   sortOrder: SortOrder[];
+  inspect: boolean;
 }
 
 export function TableHeader({
@@ -36,10 +37,11 @@ export function TableHeader({
   onMoveColumn,
   onRemoveColumn,
   sortOrder,
+  inspect,
 }: Props) {
   return (
     <tr data-test-subj="docTableHeader" className="osdDocTableHeader">
-      <th style={{ width: '28px' }} />
+      {inspect ? <th style={{ width: '28px' }} /> : <th style={{ width: '0px' }} />}
       {displayedColumns.map((col) => {
         return (
           <TableHeaderColumn

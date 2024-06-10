@@ -28,6 +28,7 @@ export interface TableRowProps {
   onFilter?: DocViewFilterFn;
   onClose?: () => void;
   isShortDots: boolean;
+  inspect: boolean;
 }
 
 const TableRowUI = ({
@@ -39,6 +40,7 @@ const TableRowUI = ({
   onFilter,
   onClose,
   isShortDots,
+  inspect,
 }: TableRowProps) => {
   const flattened = indexPattern.flattenHit(row);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -48,15 +50,22 @@ const TableRowUI = ({
 
   const tableRow = (
     <tr key={row._id}>
-      <td data-test-subj="docTableExpandToggleColumn" className="osdDocTableCell__toggleDetails">
-        <EuiButtonIcon
-          color="text"
-          onClick={handleExpanding}
-          iconType={isExpanded ? 'arrowDown' : 'arrowRight'}
-          aria-label="Next"
+      {inspect ? (
+        <td data-test-subj="docTableExpandToggleColumn" className="osdDocTableCell__toggleDetails">
+          <EuiButtonIcon
+            color="text"
+            onClick={handleExpanding}
+            iconType={isExpanded ? 'arrowDown' : 'arrowRight'}
+            aria-label="Next"
+            data-test-subj="docTableExpandToggleColumn"
+          />
+        </td>
+      ) : (
+        <td
           data-test-subj="docTableExpandToggleColumn"
+          className="osdDocTableCell__toggleDetails"
         />
-      </td>
+      )}
       {columns.map((colName) => {
         const fieldInfo = indexPattern.fields.getByName(colName);
         const fieldMapping = flattened[colName];
