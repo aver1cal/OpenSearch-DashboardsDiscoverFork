@@ -1,0 +1,100 @@
+{
+  "formats": {
+    "number": {
+      "currency": {
+        "style": "currency"
+      },
+      "percent": {
+        "style": "percent"
+      }
+    },
+    "date": {
+      "short": {
+        "month": "numeric",
+        "day": "numeric",
+        "year": "2-digit"
+      },
+      "medium": {
+        "month": "short",
+        "day": "numeric",
+        "year": "numeric"
+      },
+      "long": {
+        "month": "long",
+        "day": "numeric",
+        "year": "numeric"
+      },
+      "full": {
+        "weekday": "long",
+        "month": "long",
+        "day": "numeric",
+        "year": "numeric"
+      }
+    },
+    "time": {
+      "short": {
+        "hour": "numeric",
+        "minute": "numeric"
+      },
+      "medium": {
+        "hour": "numeric",
+        "minute": "numeric",
+        "second": "numeric"
+      },
+      "long": {
+        "hour": "numeric",
+        "minute": "numeric",
+        "second": "numeric",
+        "timeZoneName": "short"
+      },
+      "full": {
+        "hour": "numeric",
+        "minute": "numeric",
+        "second": "numeric",
+        "timeZoneName": "short"
+      }
+    },
+    "relative": {
+      "years": {
+        "units": "year"
+      },
+      "months": {
+        "units": "month"
+      },
+      "days": {
+        "units": "day"
+      },
+      "hours": {
+        "units": "hour"
+      },
+      "minutes": {
+        "units": "minute"
+      },
+      "seconds": {
+        "units": "second"
+      }
+    }
+  },
+  "messages": {
+    "flot.pie.unableToDrawLabelsInsideCanvasErrorMessage": "Kunde inte rita cirkeldiagram med etiketter inuti canvas",
+    "flot.time.aprLabel": "Apr",
+    "flot.time.augLabel": "Aug",
+    "flot.time.decLabel": "Dec",
+    "flot.time.febLabel": "Feb",
+    "flot.time.friLabel": "Fre",
+    "flot.time.janLabel": "Jan",
+    "flot.time.julLabel": "Jul",
+    "flot.time.junLabel": "Jun",
+    "flot.time.marLabel": "Mar",
+    "flot.time.mayLabel": "Maj",
+    "flot.time.monLabel": "Mån",
+    "flot.time.novLabel": "Nov",
+    "flot.time.octLabel": "Okt",
+    "flot.time.satLabel": "Lör",
+    "flot.time.sepLabel": "Sep",
+    "flot.time.sunLabel": "Sön",
+    "flot.time.thuLabel": "Tors",
+    "flot.time.tueLabel": "Tis",
+    "flot.time.wedLabel": "Ons"
+  }
+}

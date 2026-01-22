@@ -51,7 +51,7 @@ export async function runDockerGenerator(
   ubi: boolean = false
 ) {
   // UBI var config
-  const baseOSImage = ubi ? 'docker.opensearch.org/ubi8/ubi-minimal:latest' : 'centos:8';
+  const baseOSImage = ubi ? 'docker.opensearch.org/ubi8/ubi-minimal:latest' : 'amazonlinux:2023';
   const ubiVersionTag = 'ubi8';
   const ubiImageFlavor = ubi ? `-${ubiVersionTag}` : '';
 
@@ -104,6 +104,28 @@ export async function runDockerGenerator(
   // Create the OpenSearch Dashboards linux target inside the
   // OpenSearch Dashboards docker build
   await linkAsync(resolve(artifactsDir, artifactTarball), resolve(dockerBuildDir, artifactTarball));
+
+  // Copy i18n plugin if it exists
+  const i18nPluginPath = config.resolveFromRepo('plugins/dashboards-i18n/build');
+  try {
+    await accessAsync(i18nPluginPath);
+    const { readdir } = await import('fs/promises');
+    const files = await readdir(i18nPluginPath);
+    log.info(`Found files in i18n plugin path: ${files.join(', ')}`);
+    const i18nZip = files.find((f) => f.startsWith('i18nDashboards-') && f.endsWith('.zip'));
+    if (i18nZip) {
+      const { copyFile } = await import('fs/promises');
+      await copyFile(resolve(i18nPluginPath, i18nZip), resolve(dockerBuildDir, i18nZip));
+      scope.i18nPluginZip = i18nZip;
+      log.info(`Copied i18n plugin: ${i18nZip}`);
+    } else {
+      log.warning(`No i18n zip file found matching pattern in ${i18nPluginPath}`);
+    }
+  } catch (e) {
+    log.warning(
+      `i18n plugin not found, skipping. Error: ${e.message}, Path checked: ${i18nPluginPath}`
+    );
+  }
 
   // Write all the needed docker config files
   // into opensearch-dashboards-docker folder

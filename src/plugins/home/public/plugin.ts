@@ -193,7 +193,10 @@ export class HomePublicPlugin
       // register search use case overview page
       core.application.register({
         id: SEARCH_OVERVIEW_PAGE_ID,
-        title: 'Overview',
+        title: i18n.translate('home.searchOverview.title', {
+          defaultMessage: 'Overview',
+        }),
+        navLinkStatus: AppNavLinkStatus.hidden,
         mount: async (params: AppMountParameters) => {
           const [
             coreStart,

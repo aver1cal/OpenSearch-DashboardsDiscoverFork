@@ -30,7 +30,9 @@ export const getStartedSection: Section = {
 export const setupSearchUseCase = (contentManagement: ContentManagementPluginSetup) => {
   contentManagement.registerPage({
     id: SEARCH_OVERVIEW_PAGE_ID,
-    title: 'Overview',
+    title: i18n.translate('home.searchOverview.pageTitle', {
+      defaultMessage: 'Overview',
+    }),
     sections: [
       getStartedSection,
       {
