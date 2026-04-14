@@ -100,6 +100,9 @@ export class VisualizePlugin
   private appStateUpdater = new BehaviorSubject<AppUpdater>(() => ({}));
   private stopUrlTracking: (() => void) | undefined = undefined;
   private currentHistory: ScopedHistory | undefined = undefined;
+  private title = i18n.translate('visualize.title', {
+    defaultMessage: 'Visualize',
+  });
 
   constructor(private initializerContext: PluginInitializerContext) {}
 
@@ -156,7 +159,7 @@ export class VisualizePlugin
 
     core.application.register({
       id: visualizeAppId,
-      title: 'Visualize',
+      title: this.title,
       order: 8000,
       euiIconType: 'inputOutput',
       workspaceAvailability: WorkspaceAvailability.insideWorkspace,
@@ -280,7 +283,7 @@ export class VisualizePlugin
     if (home) {
       home.featureCatalogue.register({
         id: 'visualize',
-        title: 'Visualize',
+        title: this.title,
         description: i18n.translate('visualize.visualizeDescription', {
           defaultMessage:
             'Create visualizations and aggregate data stores in your OpenSearch indices.',

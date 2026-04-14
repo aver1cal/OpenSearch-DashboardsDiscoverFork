@@ -4,3 +4,4 @@
  */
 
 export * from './download_csv';
+export * from './download_csv_embeddable';

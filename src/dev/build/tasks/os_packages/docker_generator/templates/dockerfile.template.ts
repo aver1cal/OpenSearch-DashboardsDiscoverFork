@@ -36,8 +36,14 @@ import { TemplateContext } from '../template_context';
 
 function generator(options: TemplateContext) {
   const template = readFileSync(resolve(__dirname, './Dockerfile'), 'utf8');
+  // Amazon Linux 2023 uses dnf, UBI uses microdnf, older images use yum
+  const packageManager = options.ubiImageFlavor
+    ? 'microdnf'
+    : options.baseOSImage.includes('amazonlinux:2023')
+    ? 'dnf'
+    : 'yum';
   return Mustache.render(template.toString(), {
-    packageManager: options.ubiImageFlavor ? 'microdnf' : 'yum',
+    packageManager,
     ...options,
   });
 }

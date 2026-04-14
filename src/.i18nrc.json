@@ -27,7 +27,6 @@
     "inspectorViews": "legacy/core_plugins/inspector_views",
     "interpreter": "legacy/core_plugins/interpreter",
     "management": [
-      "legacy/core_plugins/management",
       "plugins/management",
       "plugins/management_overview"
     ],
@@ -95,6 +94,7 @@
     "translations/fr-CA.json",
     "translations/es-ES.json",
     "translations/es-419.json",
-    "translations/de-DE.json"
+    "translations/de-DE.json",
+    "translations/sv-SE.json"
   ]
 }

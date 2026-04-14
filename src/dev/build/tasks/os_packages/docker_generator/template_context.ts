@@ -43,4 +43,5 @@ export interface TemplateContext {
   usePublicArtifact?: boolean;
   ubi: boolean;
   revision: string;
+  pluginZips?: string[];
 }

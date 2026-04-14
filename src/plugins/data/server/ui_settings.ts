@@ -593,70 +593,70 @@ export function getUiSettings(
             from: 'now/d',
             to: 'now/d',
             display: i18n.translate('data.advancedSettings.timepicker.today', {
-              defaultMessage: 'Today',
+              defaultMessage: 'Idag',
             }),
           },
           {
             from: 'now/w',
             to: 'now/w',
             display: i18n.translate('data.advancedSettings.timepicker.thisWeek', {
-              defaultMessage: 'This week',
+              defaultMessage: 'Denna vecka',
             }),
           },
           {
             from: 'now-15m',
             to: 'now',
             display: i18n.translate('data.advancedSettings.timepicker.last15Minutes', {
-              defaultMessage: 'Last 15 minutes',
+              defaultMessage: 'Senaste 15 minuterna',
             }),
           },
           {
             from: 'now-30m',
             to: 'now',
             display: i18n.translate('data.advancedSettings.timepicker.last30Minutes', {
-              defaultMessage: 'Last 30 minutes',
+              defaultMessage: 'Senaste 30 minuterna',
             }),
           },
           {
             from: 'now-1h',
             to: 'now',
             display: i18n.translate('data.advancedSettings.timepicker.last1Hour', {
-              defaultMessage: 'Last 1 hour',
+              defaultMessage: 'Senaste 1 timme',
             }),
           },
           {
             from: 'now-24h',
             to: 'now',
             display: i18n.translate('data.advancedSettings.timepicker.last24Hours', {
-              defaultMessage: 'Last 24 hours',
+              defaultMessage: 'Senaste 24 timmar',
             }),
           },
           {
             from: 'now-7d',
             to: 'now',
             display: i18n.translate('data.advancedSettings.timepicker.last7Days', {
-              defaultMessage: 'Last 7 days',
+              defaultMessage: 'Senaste 7 dagar',
             }),
           },
           {
             from: 'now-30d',
             to: 'now',
             display: i18n.translate('data.advancedSettings.timepicker.last30Days', {
-              defaultMessage: 'Last 30 days',
+              defaultMessage: 'Senaste 30 dagar',
             }),
           },
           {
             from: 'now-90d',
             to: 'now',
             display: i18n.translate('data.advancedSettings.timepicker.last90Days', {
-              defaultMessage: 'Last 90 days',
+              defaultMessage: 'Senaste 90 dagar',
             }),
           },
           {
             from: 'now-1y',
             to: 'now',
             display: i18n.translate('data.advancedSettings.timepicker.last1Year', {
-              defaultMessage: 'Last 1 year',
+              defaultMessage: 'Senaste 1 år',
             }),
           },
         ],

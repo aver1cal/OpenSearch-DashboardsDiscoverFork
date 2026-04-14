@@ -3,6 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { i18n } from '@osd/i18n';
+
 export function get<T = unknown>(obj: Record<string, any>, path: string, defaultValue?: T): T {
   return path.split('.').reduce((acc: any, part: string) => acc && acc[part], obj) || defaultValue;
 }
@@ -89,35 +91,75 @@ export const observabilityTitle = 'Observability';
 export const observabilityPluginOrder = 1500;
 
 export const observabilityApplicationsID = 'observability-applications';
-export const observabilityApplicationsTitle = 'Applications';
+export const observabilityApplicationsTitle = i18n.translate(
+  'dataSourcesManagement.utils.shared.observabilityApplicationsTitle',
+  {
+    defaultMessage: 'Applications',
+  }
+);
 export const observabilityApplicationsPluginOrder = 5090;
 
 export const observabilityLogsID = 'observability-logs';
-export const observabilityLogsTitle = 'Logs';
+export const observabilityLogsTitle = i18n.translate(
+  'dataSourcesManagement.utils.shared.observabilityLogsTitle',
+  {
+    defaultMessage: 'Logs',
+  }
+);
 export const observabilityLogsPluginOrder = 5091;
 
 export const observabilityMetricsID = 'observability-metrics';
-export const observabilityMetricsTitle = 'Metrics';
+export const observabilityMetricsTitle = i18n.translate(
+  'dataSourcesManagement.utils.shared.observabilityMetricsTitle',
+  {
+    defaultMessage: 'Metrics',
+  }
+);
 export const observabilityMetricsPluginOrder = 5092;
 
 export const observabilityTracesID = 'observability-traces';
-export const observabilityTracesTitle = 'Traces';
+export const observabilityTracesTitle = i18n.translate(
+  'dataSourcesManagement.utils.shared.observabilityTracesTitle',
+  {
+    defaultMessage: 'Traces',
+  }
+);
 export const observabilityTracesPluginOrder = 5093;
 
 export const observabilityNotebookID = 'observability-notebooks';
-export const observabilityNotebookTitle = 'Notebooks';
+export const observabilityNotebookTitle = i18n.translate(
+  'dataSourcesManagement.utils.shared.observabilityNotebookTitle',
+  {
+    defaultMessage: 'Notebooks',
+  }
+);
 export const observabilityNotebookPluginOrder = 5094;
 
 export const observabilityPanelsID = 'observability-dashboards';
-export const observabilityPanelsTitle = 'Dashboards';
+export const observabilityPanelsTitle = i18n.translate(
+  'dataSourcesManagement.utils.shared.observabilityPanelsTitle',
+  {
+    defaultMessage: 'Dashboards',
+  }
+);
 export const observabilityPanelsPluginOrder = 5095;
 
 export const observabilityIntegrationsID = 'integrations';
-export const observabilityIntegrationsTitle = 'Integrations';
+export const observabilityIntegrationsTitle = i18n.translate(
+  'dataSourcesManagement.utils.shared.observabilityIntegrationsTitle',
+  {
+    defaultMessage: 'Integrations',
+  }
+);
 export const observabilityIntegrationsPluginOrder = 9020;
 
 export const observabilityDataConnectionsID = 'datasources';
-export const observabilityDataConnectionsTitle = 'Data sources';
+export const observabilityDataConnectionsTitle = i18n.translate(
+  'dataSourcesManagement.utils.shared.observabilityDataConnectionsTitle',
+  {
+    defaultMessage: 'Data sources',
+  }
+);
 export const observabilityDataConnectionsPluginOrder = 9030;
 
 export const queryWorkbenchPluginID = 'opensearch-query-workbench';

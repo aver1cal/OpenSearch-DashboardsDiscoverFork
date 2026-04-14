@@ -51,7 +51,7 @@ export async function runDockerGenerator(
   ubi: boolean = false
 ) {
   // UBI var config
-  const baseOSImage = ubi ? 'docker.opensearch.org/ubi8/ubi-minimal:latest' : 'centos:8';
+  const baseOSImage = ubi ? 'docker.opensearch.org/ubi8/ubi-minimal:latest' : 'amazonlinux:2023';
   const ubiVersionTag = 'ubi8';
   const ubiImageFlavor = ubi ? `-${ubiVersionTag}` : '';
 
@@ -104,6 +104,63 @@ export async function runDockerGenerator(
   // Create the OpenSearch Dashboards linux target inside the
   // OpenSearch Dashboards docker build
   await linkAsync(resolve(artifactsDir, artifactTarball), resolve(dockerBuildDir, artifactTarball));
+
+  // Copy all plugin zip files from plugins/*/build directories
+  const pluginsDir = config.resolveFromRepo('plugins');
+  const pluginZips: string[] = [];
+  try {
+    const { readdir, stat, copyFile, access: fsAccess } = await import('fs/promises');
+    const pluginDirs = await readdir(pluginsDir);
+
+    for (const pluginDir of pluginDirs) {
+      const pluginPath = resolve(pluginsDir, pluginDir);
+      const pluginBuildPath = resolve(pluginPath, 'build');
+
+      try {
+        // Check if build directory exists
+        await fsAccess(pluginBuildPath);
+      } catch (e) {
+        // Build directory doesn't exist, try to build the plugin
+        log.info(`Build directory not found for ${pluginDir}, running yarn build...`);
+        try {
+          await exec(log, 'yarn', ['build'], {
+            cwd: pluginPath,
+            level: 'info',
+          });
+          log.info(`Successfully built plugin: ${pluginDir}`);
+        } catch (buildError) {
+          log.warning(`Failed to build plugin ${pluginDir}: ${buildError.message}`);
+          continue;
+        }
+      }
+
+      try {
+        const pluginStat = await stat(pluginBuildPath);
+        if (pluginStat.isDirectory()) {
+          const buildFiles = await readdir(pluginBuildPath);
+          const zipFiles = buildFiles.filter((f) => f.endsWith('.zip'));
+
+          for (const zipFile of zipFiles) {
+            await copyFile(resolve(pluginBuildPath, zipFile), resolve(dockerBuildDir, zipFile));
+            pluginZips.push(zipFile);
+            log.info(`Copied plugin: ${zipFile} from ${pluginDir}`);
+          }
+        }
+      } catch (e) {
+        log.warning(`Error processing build directory for ${pluginDir}: ${e.message}`);
+        continue;
+      }
+    }
+
+    if (pluginZips.length > 0) {
+      scope.pluginZips = pluginZips;
+      log.info(`Total plugins copied: ${pluginZips.length}`);
+    } else {
+      log.warning('No plugin zip files found in any plugins/*/build directories');
+    }
+  } catch (e) {
+    log.warning(`Error scanning plugins directory: ${e.message}, Path checked: ${pluginsDir}`);
+  }
 
   // Write all the needed docker config files
   // into opensearch-dashboards-docker folder

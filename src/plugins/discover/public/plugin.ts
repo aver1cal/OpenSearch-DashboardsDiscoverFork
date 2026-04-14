@@ -167,6 +167,9 @@ export class DiscoverPlugin
   private servicesInitialized: boolean = false;
   private urlGenerator?: DiscoverStart['urlGenerator'];
   private initializeServices?: () => { core: CoreStart; plugins: DiscoverStartPlugins };
+  private title = i18n.translate('discover.title', {
+    defaultMessage: 'Discover',
+  });
 
   setup(core: CoreSetup<DiscoverStartPlugins, DiscoverStart>, plugins: DiscoverSetupPlugins) {
     const baseUrl = core.http.basePath.prepend('/app/discover');
@@ -265,7 +268,7 @@ export class DiscoverPlugin
 
     core.application.register({
       id: PLUGIN_ID,
-      title: 'Discover',
+      title: this.title,
       updater$: this.appStateUpdater.asObservable(),
       order: 1000,
       workspaceAvailability: WorkspaceAvailability.insideWorkspace,
@@ -377,7 +380,7 @@ export class DiscoverPlugin
 
     plugins.dataExplorer.registerView<DiscoverState>({
       id: PLUGIN_ID,
-      title: 'Discover',
+      title: this.title,
       defaultPath: '#/',
       appExtentions: {
         savedObject: {

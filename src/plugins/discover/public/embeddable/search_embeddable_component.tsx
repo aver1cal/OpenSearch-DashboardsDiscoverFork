@@ -15,6 +15,7 @@ import { VisualizationNoResults } from '../../../visualizations/public';
 import { getServices } from '../opensearch_dashboards_services';
 import './search_embeddable.scss';
 import { OpenSearchDashboardsContextProvider } from '../../../opensearch_dashboards_react/public';
+import { DiscoverDownloadCsvEmbeddable } from '../application/components/download_csv';
 
 interface SearchEmbeddableProps {
   searchProps: SearchProps;
@@ -57,6 +58,14 @@ export function SearchEmbeddableComponent({ searchProps }: SearchEmbeddableProps
           data-test-subj="embeddedSavedSearchDocTable"
           className="eui-xScrollWithShadows eui-yScrollWithShadows"
         >
+          <EuiFlexItem grow={false}>
+            <DiscoverDownloadCsvEmbeddable
+              indexPattern={discoverEmbeddableProps.indexPattern}
+              rows={discoverEmbeddableProps.rows}
+              hits={discoverEmbeddableProps.hits}
+              columns={discoverEmbeddableProps.columns}
+            />
+          </EuiFlexItem>
           {discoverEmbeddableProps.hits !== 0 ? (
             <EuiFlexItem
               style={{ minHeight: 0 }}

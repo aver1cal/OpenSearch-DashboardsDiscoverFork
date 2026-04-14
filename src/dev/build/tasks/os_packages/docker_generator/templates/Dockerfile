@@ -11,9 +11,7 @@
 ################################################################################
 FROM {{{baseOSImage}}} AS builder
 
-{{#ubi}}
 RUN {{packageManager}} install -y findutils tar gzip
-{{/ubi}}
 
 {{#usePublicArtifact}}
 # TODO: Update this link or remove functionality
@@ -53,7 +51,7 @@ EXPOSE 5601
 RUN for iter in {1..10}; do \
       {{packageManager}} update --setopt=tsflags=nodocs -y && \
       {{packageManager}} install --setopt=tsflags=nodocs -y \
-        fontconfig freetype shadow-utils libnss3.so {{#ubi}}findutils{{/ubi}} && \
+        fontconfig freetype shadow-utils nss findutils unzip && \
       {{packageManager}} clean all && exit_code=0 && break || exit_code=$? && echo "{{packageManager}} error: retry $iter in 10s" && \
       sleep 10; \
     done; \
@@ -129,7 +127,23 @@ RUN mkdir /licenses && \
     cp LICENSE.txt /licenses/LICENSE
 {{/ubi}}
 
+{{#pluginZips}}
+# Copy and install custom plugins from plugins/*/build directories
+{{#.}}
+COPY --chown=1000:0 {{.}} /tmp/
+{{/.}}
+
 USER opensearch-dashboards
+
+{{#.}}
+RUN ./bin/opensearch-dashboards-plugin install file:///tmp/{{.}}
+{{/.}}
+{{/pluginZips}}
+
+# Install OpenSearch Dashboards plugins as non-root user
+RUN for p in assistantDashboards notificationsDashboards; do \
+      ./bin/opensearch-dashboards-plugin install "$p"; \
+    done
 
 ENTRYPOINT ["/usr/local/bin/dumb-init", "--"]
 

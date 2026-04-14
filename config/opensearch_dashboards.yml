@@ -420,3 +420,5 @@
 # @experimental Set the value to true to enable context provider
 # contextProvider:
 #   enabled: true
+
+i18n.locale: "sv-SE"

@@ -593,6 +593,30 @@ export const getEuiContextMapping = () => {
         defaultMessage: 'You can quickly navigate this list using arrow keys.',
       }
     ),
+    'euiRecentlyUsed.legend': i18n.translate('core.euiRecentlyUsed.legend', {
+      defaultMessage: 'Recently used date ranges',
+    }),
+    'euiTimeUnits.seconds': i18n.translate('core.euiTimeUnits.seconds', {
+      defaultMessage: 'seconds',
+    }),
+    'euiTimeUnits.minutes': i18n.translate('core.euiTimeUnits.minutes', {
+      defaultMessage: 'minutes',
+    }),
+    'euiTimeUnits.hours': i18n.translate('core.euiTimeUnits.hours', {
+      defaultMessage: 'hours',
+    }),
+    'euiTimeUnits.days': i18n.translate('core.euiTimeUnits.days', {
+      defaultMessage: 'days',
+    }),
+    'euiTimeUnits.weeks': i18n.translate('core.euiTimeUnits.weeks', {
+      defaultMessage: 'weeks',
+    }),
+    'euiTimeUnits.months': i18n.translate('core.euiTimeUnits.months', {
+      defaultMessage: 'months',
+    }),
+    'euiTimeUnits.years': i18n.translate('core.euiTimeUnits.years', {
+      defaultMessage: 'years',
+    }),
   };
 
   return euiContextMapping;

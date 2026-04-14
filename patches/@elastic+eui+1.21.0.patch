@@ -1,0 +1,1551 @@
+diff --git a/node_modules/@elastic/eui/dist/oui.js b/node_modules/@elastic/eui/dist/oui.js
+index 4d49d4a..cfcb0a9 100644
+--- a/node_modules/@elastic/eui/dist/oui.js
++++ b/node_modules/@elastic/eui/dist/oui.js
+@@ -154965,7 +154965,7 @@ var OuiAbsoluteTab = /*#__PURE__*/function (_Component) {
+         value: textInputValue,
+         onChange: this.handleTextChange,
+         "data-test-subj": 'superDatePickerAbsoluteDateInput',
+-        prepend: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_form__WEBPACK_IMPORTED_MODULE_12__["OuiFormLabel"], null, sentenceCasedPosition, " date")
++        prepend: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_form__WEBPACK_IMPORTED_MODULE_12__["OuiFormLabel"], null, sentenceCasedPosition, " datum")
+       })));
+     }
+   }]);
+@@ -155759,35 +155759,35 @@ var ISO_FORMAT = 'YYYY-MM-DDTHH:mm:ss.SSSZ';
+ var commonDurationRanges = [{
+   start: 'now/d',
+   end: 'now/d',
+-  label: 'Today'
++  label: 'Idag'
+ }, {
+   start: 'now/w',
+   end: 'now/w',
+-  label: 'This week'
++  label: 'Denna veckan'
+ }, {
+   start: 'now/M',
+   end: 'now/M',
+-  label: 'This month'
++  label: 'Denna månaden'
+ }, {
+   start: 'now/y',
+   end: 'now/y',
+-  label: 'This year'
++  label: 'Detta året'
+ }, {
+   start: 'now-1d/d',
+   end: 'now-1d/d',
+-  label: 'Yesterday'
++  label: 'Igår'
+ }, {
+   start: 'now/w',
+   end: 'now',
+-  label: 'Week to date'
++  label: 'Vecka till nu'
+ }, {
+   start: 'now/M',
+   end: 'now',
+-  label: 'Month to date'
++  label: 'Månad till nu'
+ }, {
+   start: 'now/y',
+   end: 'now',
+-  label: 'Year to date'
++  label: 'År till nu'
+ }];
+ function cantLookup(timeFrom, timeTo, dateFormat) {
+   var displayFrom = formatTimeString(timeFrom, dateFormat);
+@@ -155803,13 +155803,13 @@ function isRelativeToNow(timeFrom, timeTo) {
+ }
+ function formatTimeString(timeString, dateFormat) {
+   var roundUp = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+-  var locale = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'en';
++  var locale = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'sv';
+   var timeAsMoment = moment__WEBPACK_IMPORTED_MODULE_3___default()(timeString, ISO_FORMAT, true);
+   if (timeAsMoment.isValid()) {
+     return timeAsMoment.locale(locale).format(dateFormat);
+   }
+   if (timeString === 'now') {
+-    return 'now';
++    return 'nu';
+   }
+   var tryParse = _opensearch_datemath__WEBPACK_IMPORTED_MODULE_2___default.a.parse(timeString, {
+     roundUp: roundUp
+@@ -155834,10 +155834,10 @@ function prettyDuration(timeFrom, timeTo) {
+     var timeTense;
+     var relativeParts;
+     if (Object(_date_modes__WEBPACK_IMPORTED_MODULE_5__["getDateMode"])(timeTo) === _date_modes__WEBPACK_IMPORTED_MODULE_5__["DATE_MODES"].NOW) {
+-      timeTense = 'Last';
++      timeTense = 'Sista';
+       relativeParts = Object(_relative_utils__WEBPACK_IMPORTED_MODULE_6__["parseRelativeParts"])(timeFrom);
+     } else {
+-      timeTense = 'Next';
++      timeTense = 'Nästa';
+       relativeParts = Object(_relative_utils__WEBPACK_IMPORTED_MODULE_6__["parseRelativeParts"])(timeTo);
+     }
+     var countTimeUnit = relativeParts.unit.substring(0, 1);
+@@ -155918,19 +155918,19 @@ var prettyInterval = function prettyInterval(isPaused, intervalInMs) {
+     return 'Off';
+   } else if (intervalInMs < MS_IN_MINUTE) {
+     var intervalInSeconds = Math.round(intervalInMs / MS_IN_SECOND);
+-    units = intervalInSeconds > 1 ? 'seconds' : 'second';
++    units = intervalInSeconds > 1 ? 'sekunder' : 'sekund';
+     return "".concat(intervalInSeconds, " ").concat(units);
+   } else if (intervalInMs < MS_IN_HOUR) {
+     var intervalInMinutes = Math.round(intervalInMs / MS_IN_MINUTE);
+-    units = intervalInMinutes > 1 ? 'minutes' : 'minute';
++    units = intervalInMinutes > 1 ? 'minuter' : 'minut';
+     return "".concat(intervalInMinutes, " ").concat(units);
+   } else if (intervalInMs < MS_IN_DAY) {
+     var intervalInHours = Math.round(intervalInMs / MS_IN_HOUR);
+-    units = intervalInHours > 1 ? 'hours' : 'hour';
++    units = intervalInHours > 1 ? 'timmar' : 'timme';
+     return "".concat(intervalInHours, " ").concat(units);
+   }
+   var intervalInDays = Math.round(intervalInMs / MS_IN_DAY);
+-  units = intervalInDays > 1 ? 'days' : 'day';
++  units = intervalInDays > 1 ? 'dagar' : 'dag';
+   return "".concat(intervalInDays, " ").concat(units);
+ };
+ 
+@@ -156251,15 +156251,15 @@ var LAST = 'last';
+ var NEXT = 'next';
+ var timeTenseOptions = [{
+   value: LAST,
+-  text: 'Last'
++  text: 'Sista'
+ }, {
+   value: NEXT,
+-  text: 'Next'
++  text: 'Nästa'
+ }];
+ var timeUnitsOptions = Object(_common__WEBPACK_IMPORTED_MODULE_25__["keysOf"])(_time_units__WEBPACK_IMPORTED_MODULE_23__["timeUnits"]).map(function (key) {
+   return {
+     value: key,
+-    text: "".concat(_time_units__WEBPACK_IMPORTED_MODULE_23__["timeUnits"][key], "s")
++    text: "".concat(_time_units__WEBPACK_IMPORTED_MODULE_23__["timeUnits"][key], "")
+   };
+ });
+ var OuiQuickSelect = /*#__PURE__*/function (_Component) {
+@@ -157408,46 +157408,46 @@ __webpack_require__.r(__webpack_exports__);
+  */
+ 
+ var relativeOptions = [{
+-  text: 'Seconds ago',
++  text: 'Sekunder sedan',
+   value: 's'
+ }, {
+-  text: 'Minutes ago',
++  text: 'Minuter sedan',
+   value: 'm'
+ }, {
+-  text: 'Hours ago',
++  text: 'Timmar sedan',
+   value: 'h'
+ }, {
+-  text: 'Days ago',
++  text: 'Dagar sedan',
+   value: 'd'
+ }, {
+-  text: 'Weeks ago',
++  text: 'Veckor sedan',
+   value: 'w'
+ }, {
+-  text: 'Months ago',
++  text: 'Månader sedan',
+   value: 'M'
+ }, {
+-  text: 'Years ago',
++  text: 'År sedan',
+   value: 'y'
+ }, {
+-  text: 'Seconds from now',
++  text: 'Sekunder från nu',
+   value: 's+'
+ }, {
+-  text: 'Minutes from now',
++  text: 'Minuter från nu',
+   value: 'm+'
+ }, {
+-  text: 'Hours from now',
++  text: 'Timmar från nu',
+   value: 'h+'
+ }, {
+-  text: 'Days from now',
++  text: 'Dagar från nu',
+   value: 'd+'
+ }, {
+-  text: 'Weeks from now',
++  text: 'Veckor från nu',
+   value: 'w+'
+ }, {
+-  text: 'Months from now',
++  text: 'Månader från nu',
+   value: 'M+'
+ }, {
+-  text: 'Years from now',
++  text: 'År från nu',
+   value: 'y+'
+ }];
+ var timeUnitIds = relativeOptions.map(function (_ref) {
+@@ -158517,22 +158517,22 @@ __webpack_require__.r(__webpack_exports__);
+  */
+ 
+ var timeUnits = {
+-  s: 'second',
+-  m: 'minute',
+-  h: 'hour',
+-  d: 'day',
+-  w: 'week',
+-  M: 'month',
+-  y: 'year'
++  s: 'sekund',
++  m: 'minut',
++  h: 'timme',
++  d: 'dag',
++  w: 'vecka',
++  M: 'månad',
++  y: 'år'
+ };
+ var timeUnitsPlural = {
+-  s: 'seconds',
+-  m: 'minutes',
+-  h: 'hours',
+-  d: 'days',
+-  w: 'weeks',
+-  M: 'months',
+-  y: 'years'
++  s: 'sekunder',
++  m: 'minuter',
++  h: 'timmar',
++  d: 'dagar',
++  w: 'veckor',
++  M: 'månader',
++  y: 'år'
+ };
+ 
+ /***/ }),
+diff --git a/node_modules/@elastic/eui/es/components/date_picker/super_date_picker/date_popover/absolute_tab.js b/node_modules/@elastic/eui/es/components/date_picker/super_date_picker/date_popover/absolute_tab.js
+index 422e683..cf5be63 100644
+--- a/node_modules/@elastic/eui/es/components/date_picker/super_date_picker/date_popover/absolute_tab.js
++++ b/node_modules/@elastic/eui/es/components/date_picker/super_date_picker/date_popover/absolute_tab.js
+@@ -131,7 +131,7 @@ export var OuiAbsoluteTab = /*#__PURE__*/function (_Component) {
+         value: textInputValue,
+         onChange: this.handleTextChange,
+         "data-test-subj": 'superDatePickerAbsoluteDateInput',
+-        prepend: /*#__PURE__*/React.createElement(OuiFormLabel, null, sentenceCasedPosition, " date")
++        prepend: /*#__PURE__*/React.createElement(OuiFormLabel, null, sentenceCasedPosition, " datum")
+       })));
+     }
+   }]);
+diff --git a/node_modules/@elastic/eui/es/components/date_picker/super_date_picker/date_popover/date_popover_content.js b/node_modules/@elastic/eui/es/components/date_picker/super_date_picker/date_popover/date_popover_content.js
+index 434362b..dc4a853 100644
+--- a/node_modules/@elastic/eui/es/components/date_picker/super_date_picker/date_popover/date_popover_content.js
++++ b/node_modules/@elastic/eui/es/components/date_picker/super_date_picker/date_popover/date_popover_content.js
+@@ -58,10 +58,10 @@ export var OuiDatePopoverContent = function OuiDatePopoverContent(_ref) {
+         break;
+     }
+   };
+-  var ariaLabel = "".concat(position === 'start' ? 'Start' : 'End', " date:");
++  var ariaLabel = "".concat(position === 'start' ? 'Start' : 'Slut', " datum:");
+   var renderTabs = [{
+     id: DATE_MODES.ABSOLUTE,
+-    name: 'Absolute',
++    name: 'Absolut',
+     content: /*#__PURE__*/React.createElement(OuiAbsoluteTab, {
+       dateFormat: dateFormat,
+       timeFormat: timeFormat,
+@@ -73,10 +73,10 @@ export var OuiDatePopoverContent = function OuiDatePopoverContent(_ref) {
+       utcOffset: utcOffset
+     }),
+     'data-test-subj': 'superDatePickerAbsoluteTab',
+-    'aria-label': "".concat(ariaLabel, " Absolute")
++    'aria-label': "".concat(ariaLabel, " Absolut")
+   }, {
+     id: DATE_MODES.RELATIVE,
+-    name: 'Relative',
++    name: 'Relativ',
+     content: /*#__PURE__*/React.createElement(OuiRelativeTab, {
+       dateFormat: dateFormat,
+       locale: locale,
+@@ -86,7 +86,7 @@ export var OuiDatePopoverContent = function OuiDatePopoverContent(_ref) {
+       position: position
+     }),
+     'data-test-subj': 'superDatePickerRelativeTab',
+-    'aria-label': "".concat(ariaLabel, " Relative")
++    'aria-label': "".concat(ariaLabel, " Relativ")
+   }, {
+     id: DATE_MODES.NOW,
+     name: 'Now',
+@@ -94,16 +94,16 @@ export var OuiDatePopoverContent = function OuiDatePopoverContent(_ref) {
+       size: "s",
+       color: "subdued",
+       className: "ouiDatePopoverContent__padded--large"
+-    }, /*#__PURE__*/React.createElement("p", null, "Setting the time to \"now\" means that on every refresh this time will be set to the time of the refresh."), /*#__PURE__*/React.createElement(OuiButton, {
++    }, /*#__PURE__*/React.createElement("p", null, "Inställning av tiden till \"nu\" innebär att vid varje uppdatering kommer denna tid att sättas till uppdateringens tid."), /*#__PURE__*/React.createElement(OuiButton, {
+       "data-test-subj": "superDatePickerNowButton",
+       onClick: function onClick() {
+         onChange('now');
+       },
+       fullWidth: true,
+       size: "s"
+-    }, "Set ", position, " date and time to now")),
++    }, "Sätt ", position, " datum och tid till nu")),
+     'data-test-subj': 'superDatePickerNowTab',
+-    'aria-label': "".concat(ariaLabel, " Now")
++    'aria-label': "".concat(ariaLabel, " Nu")
+   }];
+   var initialSelectedTab = renderTabs.find(function (tab) {
+     return tab.id === getDateMode(value);
+diff --git a/node_modules/@elastic/eui/es/components/date_picker/super_date_picker/pretty_duration.js b/node_modules/@elastic/eui/es/components/date_picker/super_date_picker/pretty_duration.js
+index 13a33ca..fb8731d 100644
+--- a/node_modules/@elastic/eui/es/components/date_picker/super_date_picker/pretty_duration.js
++++ b/node_modules/@elastic/eui/es/components/date_picker/super_date_picker/pretty_duration.js
+@@ -37,35 +37,35 @@ var ISO_FORMAT = 'YYYY-MM-DDTHH:mm:ss.SSSZ';
+ export var commonDurationRanges = [{
+   start: 'now/d',
+   end: 'now/d',
+-  label: 'Today'
++  label: 'Idag'
+ }, {
+   start: 'now/w',
+   end: 'now/w',
+-  label: 'This week'
++  label: 'Denna veckan'
+ }, {
+   start: 'now/M',
+   end: 'now/M',
+-  label: 'This month'
++  label: 'Denna månaden'
+ }, {
+   start: 'now/y',
+   end: 'now/y',
+-  label: 'This year'
++  label: 'Detta året'
+ }, {
+   start: 'now-1d/d',
+   end: 'now-1d/d',
+-  label: 'Yesterday'
++  label: 'Igår'
+ }, {
+   start: 'now/w',
+   end: 'now',
+-  label: 'Week to date'
++  label: 'Vecka till nu'
+ }, {
+   start: 'now/M',
+   end: 'now',
+-  label: 'Month to date'
++  label: 'Månad till nu'
+ }, {
+   start: 'now/y',
+   end: 'now',
+-  label: 'Year to date'
++  label: 'År till nu'
+ }];
+ function cantLookup(timeFrom, timeTo, dateFormat) {
+   var displayFrom = formatTimeString(timeFrom, dateFormat);
+@@ -81,13 +81,13 @@ function isRelativeToNow(timeFrom, timeTo) {
+ }
+ export function formatTimeString(timeString, dateFormat) {
+   var roundUp = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+-  var locale = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'en';
++  var locale = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'sv';
+   var timeAsMoment = moment(timeString, ISO_FORMAT, true);
+   if (timeAsMoment.isValid()) {
+     return timeAsMoment.locale(locale).format(dateFormat);
+   }
+   if (timeString === 'now') {
+-    return 'now';
++    return 'nu';
+   }
+   var tryParse = dateMath.parse(timeString, {
+     roundUp: roundUp
+@@ -112,10 +112,10 @@ export function prettyDuration(timeFrom, timeTo) {
+     var timeTense;
+     var relativeParts;
+     if (getDateMode(timeTo) === DATE_MODES.NOW) {
+-      timeTense = 'Last';
++      timeTense = 'Sista';
+       relativeParts = parseRelativeParts(timeFrom);
+     } else {
+-      timeTense = 'Next';
++      timeTense = 'Nästa';
+       relativeParts = parseRelativeParts(timeTo);
+     }
+     var countTimeUnit = relativeParts.unit.substring(0, 1);
+diff --git a/node_modules/@elastic/eui/es/components/date_picker/super_date_picker/pretty_interval.js b/node_modules/@elastic/eui/es/components/date_picker/super_date_picker/pretty_interval.js
+index 1fde80a..550f5ef 100644
+--- a/node_modules/@elastic/eui/es/components/date_picker/super_date_picker/pretty_interval.js
++++ b/node_modules/@elastic/eui/es/components/date_picker/super_date_picker/pretty_interval.js
+@@ -38,18 +38,18 @@ export var prettyInterval = function prettyInterval(isPaused, intervalInMs) {
+     return 'Off';
+   } else if (intervalInMs < MS_IN_MINUTE) {
+     var intervalInSeconds = Math.round(intervalInMs / MS_IN_SECOND);
+-    units = intervalInSeconds > 1 ? 'seconds' : 'second';
++    units = intervalInSeconds > 1 ? 'sekunder' : 'sekund';
+     return "".concat(intervalInSeconds, " ").concat(units);
+   } else if (intervalInMs < MS_IN_HOUR) {
+     var intervalInMinutes = Math.round(intervalInMs / MS_IN_MINUTE);
+-    units = intervalInMinutes > 1 ? 'minutes' : 'minute';
++    units = intervalInMinutes > 1 ? 'minuter' : 'minut';
+     return "".concat(intervalInMinutes, " ").concat(units);
+   } else if (intervalInMs < MS_IN_DAY) {
+     var intervalInHours = Math.round(intervalInMs / MS_IN_HOUR);
+-    units = intervalInHours > 1 ? 'hours' : 'hour';
++    units = intervalInHours > 1 ? 'timmar' : 'timme';
+     return "".concat(intervalInHours, " ").concat(units);
+   }
+   var intervalInDays = Math.round(intervalInMs / MS_IN_DAY);
+-  units = intervalInDays > 1 ? 'days' : 'day';
++  units = intervalInDays > 1 ? 'dagar' : 'dag';
+   return "".concat(intervalInDays, " ").concat(units);
+ };
+\ No newline at end of file
+diff --git a/node_modules/@elastic/eui/es/components/date_picker/super_date_picker/quick_select_popover/quick_select.js b/node_modules/@elastic/eui/es/components/date_picker/super_date_picker/quick_select_popover/quick_select.js
+index 4f9bede..e057341 100644
+--- a/node_modules/@elastic/eui/es/components/date_picker/super_date_picker/quick_select_popover/quick_select.js
++++ b/node_modules/@elastic/eui/es/components/date_picker/super_date_picker/quick_select_popover/quick_select.js
+@@ -64,15 +64,15 @@ var LAST = 'last';
+ var NEXT = 'next';
+ var timeTenseOptions = [{
+   value: LAST,
+-  text: 'Last'
++  text: 'Sista'
+ }, {
+   value: NEXT,
+-  text: 'Next'
++  text: 'Nästa'
+ }];
+ var timeUnitsOptions = keysOf(timeUnits).map(function (key) {
+   return {
+     value: key,
+-    text: "".concat(timeUnits[key], "s")
++    text: "".concat(timeUnits[key], "")
+   };
+ });
+ export var OuiQuickSelect = /*#__PURE__*/function (_Component) {
+diff --git a/node_modules/@elastic/eui/es/components/date_picker/super_date_picker/relative_options.js b/node_modules/@elastic/eui/es/components/date_picker/super_date_picker/relative_options.js
+index 68fb06a..15f2a8e 100644
+--- a/node_modules/@elastic/eui/es/components/date_picker/super_date_picker/relative_options.js
++++ b/node_modules/@elastic/eui/es/components/date_picker/super_date_picker/relative_options.js
+@@ -29,46 +29,46 @@
+  */
+ 
+ export var relativeOptions = [{
+-  text: 'Seconds ago',
++  text: 'Sekunder sedan',
+   value: 's'
+ }, {
+-  text: 'Minutes ago',
++  text: 'Minuter sedan',
+   value: 'm'
+ }, {
+-  text: 'Hours ago',
++  text: 'Timmar sedan',
+   value: 'h'
+ }, {
+-  text: 'Days ago',
++  text: 'Dagar sedan',
+   value: 'd'
+ }, {
+-  text: 'Weeks ago',
++  text: 'Veckor sedan',
+   value: 'w'
+ }, {
+-  text: 'Months ago',
++  text: 'Månader sedan',
+   value: 'M'
+ }, {
+-  text: 'Years ago',
++  text: 'År sedan',
+   value: 'y'
+ }, {
+-  text: 'Seconds from now',
++  text: 'Sekunder från nu',
+   value: 's+'
+ }, {
+-  text: 'Minutes from now',
++  text: 'Minuter från nu',
+   value: 'm+'
+ }, {
+-  text: 'Hours from now',
++  text: 'Timmar från nu',
+   value: 'h+'
+ }, {
+-  text: 'Days from now',
++  text: 'Dagar från nu',
+   value: 'd+'
+ }, {
+-  text: 'Weeks from now',
++  text: 'Veckor från nu',
+   value: 'w+'
+ }, {
+-  text: 'Months from now',
++  text: 'Månader från nu',
+   value: 'M+'
+ }, {
+-  text: 'Years from now',
++  text: 'År från nu',
+   value: 'y+'
+ }];
+ var timeUnitIds = relativeOptions.map(function (_ref) {
+diff --git a/node_modules/@elastic/eui/es/components/date_picker/super_date_picker/time_units.js b/node_modules/@elastic/eui/es/components/date_picker/super_date_picker/time_units.js
+index 38077f7..38fc9e4 100644
+--- a/node_modules/@elastic/eui/es/components/date_picker/super_date_picker/time_units.js
++++ b/node_modules/@elastic/eui/es/components/date_picker/super_date_picker/time_units.js
+@@ -29,20 +29,20 @@
+  */
+ 
+ export var timeUnits = {
+-  s: 'second',
+-  m: 'minute',
+-  h: 'hour',
+-  d: 'day',
+-  w: 'week',
+-  M: 'month',
+-  y: 'year'
++  s: 'sekund',
++  m: 'minut',
++  h: 'timme',
++  d: 'dag',
++  w: 'vecka',
++  M: 'månad',
++  y: 'år'
+ };
+ export var timeUnitsPlural = {
+-  s: 'seconds',
+-  m: 'minutes',
+-  h: 'hours',
+-  d: 'days',
+-  w: 'weeks',
+-  M: 'months',
+-  y: 'years'
++  s: 'sekunder',
++  m: 'minuter',
++  h: 'timmar',
++  d: 'dagar',
++  w: 'veckor',
++  M: 'månader',
++  y: 'år'
+ };
+\ No newline at end of file
+diff --git a/node_modules/@elastic/eui/es/eui_components/date_picker/super_date_picker/date_popover/absolute_tab.js b/node_modules/@elastic/eui/es/eui_components/date_picker/super_date_picker/date_popover/absolute_tab.js
+index 2188178..23bb0bf 100644
+--- a/node_modules/@elastic/eui/es/eui_components/date_picker/super_date_picker/date_popover/absolute_tab.js
++++ b/node_modules/@elastic/eui/es/eui_components/date_picker/super_date_picker/date_popover/absolute_tab.js
+@@ -131,7 +131,7 @@ export var EuiAbsoluteTab = /*#__PURE__*/function (_Component) {
+         value: textInputValue,
+         onChange: this.handleTextChange,
+         "data-test-subj": 'superDatePickerAbsoluteDateInput',
+-        prepend: /*#__PURE__*/React.createElement(EuiFormLabel, null, sentenceCasedPosition, " date")
++        prepend: /*#__PURE__*/React.createElement(EuiFormLabel, null, sentenceCasedPosition, " datum")
+       })));
+     }
+   }]);
+diff --git a/node_modules/@elastic/eui/es/eui_components/date_picker/super_date_picker/date_popover/date_popover_content.js b/node_modules/@elastic/eui/es/eui_components/date_picker/super_date_picker/date_popover/date_popover_content.js
+index 7362a8f..f84088a 100644
+--- a/node_modules/@elastic/eui/es/eui_components/date_picker/super_date_picker/date_popover/date_popover_content.js
++++ b/node_modules/@elastic/eui/es/eui_components/date_picker/super_date_picker/date_popover/date_popover_content.js
+@@ -58,10 +58,10 @@ export var EuiDatePopoverContent = function EuiDatePopoverContent(_ref) {
+         break;
+     }
+   };
+-  var ariaLabel = "".concat(position === 'start' ? 'Start' : 'End', " date:");
++  var ariaLabel = "".concat(position === 'start' ? 'Start' : 'Slut', " datum:");
+   var renderTabs = [{
+     id: DATE_MODES.ABSOLUTE,
+-    name: 'Absolute',
++    name: 'Absolut',
+     content: /*#__PURE__*/React.createElement(EuiAbsoluteTab, {
+       dateFormat: dateFormat,
+       timeFormat: timeFormat,
+@@ -73,10 +73,10 @@ export var EuiDatePopoverContent = function EuiDatePopoverContent(_ref) {
+       utcOffset: utcOffset
+     }),
+     'data-test-subj': 'superDatePickerAbsoluteTab',
+-    'aria-label': "".concat(ariaLabel, " Absolute")
++    'aria-label': "".concat(ariaLabel, " Absolut")
+   }, {
+     id: DATE_MODES.RELATIVE,
+-    name: 'Relative',
++    name: 'Relativ',
+     content: /*#__PURE__*/React.createElement(EuiRelativeTab, {
+       dateFormat: dateFormat,
+       locale: locale,
+@@ -86,24 +86,24 @@ export var EuiDatePopoverContent = function EuiDatePopoverContent(_ref) {
+       position: position
+     }),
+     'data-test-subj': 'superDatePickerRelativeTab',
+-    'aria-label': "".concat(ariaLabel, " Relative")
++    'aria-label': "".concat(ariaLabel, " Relativ")
+   }, {
+     id: DATE_MODES.NOW,
+-    name: 'Now',
++    name: 'Nu',
+     content: /*#__PURE__*/React.createElement(EuiText, {
+       size: "s",
+       color: "subdued",
+       className: "euiDatePopoverContent__padded--large"
+-    }, /*#__PURE__*/React.createElement("p", null, "Setting the time to \"now\" means that on every refresh this time will be set to the time of the refresh."), /*#__PURE__*/React.createElement(EuiButton, {
++    }, /*#__PURE__*/React.createElement("p", null, "Inställning av tiden till \"nu\" innebär att vid varje uppdatering kommer denna tid att sättas till uppdateringens tid."), /*#__PURE__*/React.createElement(EuiButton, {
+       "data-test-subj": "superDatePickerNowButton",
+       onClick: function onClick() {
+         onChange('now');
+       },
+       fullWidth: true,
+       size: "s"
+-    }, "Set ", position, " date and time to now")),
++    }, "Sätt ", position, " datum och tid till nu")),
+     'data-test-subj': 'superDatePickerNowTab',
+-    'aria-label': "".concat(ariaLabel, " Now")
++    'aria-label': "".concat(ariaLabel, " Nu")
+   }];
+   var initialSelectedTab = renderTabs.find(function (tab) {
+     return tab.id === getDateMode(value);
+diff --git a/node_modules/@elastic/eui/es/eui_components/date_picker/super_date_picker/pretty_duration.js b/node_modules/@elastic/eui/es/eui_components/date_picker/super_date_picker/pretty_duration.js
+index 13a33ca..fb8731d 100644
+--- a/node_modules/@elastic/eui/es/eui_components/date_picker/super_date_picker/pretty_duration.js
++++ b/node_modules/@elastic/eui/es/eui_components/date_picker/super_date_picker/pretty_duration.js
+@@ -37,35 +37,35 @@ var ISO_FORMAT = 'YYYY-MM-DDTHH:mm:ss.SSSZ';
+ export var commonDurationRanges = [{
+   start: 'now/d',
+   end: 'now/d',
+-  label: 'Today'
++  label: 'Idag'
+ }, {
+   start: 'now/w',
+   end: 'now/w',
+-  label: 'This week'
++  label: 'Denna veckan'
+ }, {
+   start: 'now/M',
+   end: 'now/M',
+-  label: 'This month'
++  label: 'Denna månaden'
+ }, {
+   start: 'now/y',
+   end: 'now/y',
+-  label: 'This year'
++  label: 'Detta året'
+ }, {
+   start: 'now-1d/d',
+   end: 'now-1d/d',
+-  label: 'Yesterday'
++  label: 'Igår'
+ }, {
+   start: 'now/w',
+   end: 'now',
+-  label: 'Week to date'
++  label: 'Vecka till nu'
+ }, {
+   start: 'now/M',
+   end: 'now',
+-  label: 'Month to date'
++  label: 'Månad till nu'
+ }, {
+   start: 'now/y',
+   end: 'now',
+-  label: 'Year to date'
++  label: 'År till nu'
+ }];
+ function cantLookup(timeFrom, timeTo, dateFormat) {
+   var displayFrom = formatTimeString(timeFrom, dateFormat);
+@@ -81,13 +81,13 @@ function isRelativeToNow(timeFrom, timeTo) {
+ }
+ export function formatTimeString(timeString, dateFormat) {
+   var roundUp = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+-  var locale = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'en';
++  var locale = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'sv';
+   var timeAsMoment = moment(timeString, ISO_FORMAT, true);
+   if (timeAsMoment.isValid()) {
+     return timeAsMoment.locale(locale).format(dateFormat);
+   }
+   if (timeString === 'now') {
+-    return 'now';
++    return 'nu';
+   }
+   var tryParse = dateMath.parse(timeString, {
+     roundUp: roundUp
+@@ -112,10 +112,10 @@ export function prettyDuration(timeFrom, timeTo) {
+     var timeTense;
+     var relativeParts;
+     if (getDateMode(timeTo) === DATE_MODES.NOW) {
+-      timeTense = 'Last';
++      timeTense = 'Sista';
+       relativeParts = parseRelativeParts(timeFrom);
+     } else {
+-      timeTense = 'Next';
++      timeTense = 'Nästa';
+       relativeParts = parseRelativeParts(timeTo);
+     }
+     var countTimeUnit = relativeParts.unit.substring(0, 1);
+diff --git a/node_modules/@elastic/eui/es/eui_components/date_picker/super_date_picker/pretty_interval.js b/node_modules/@elastic/eui/es/eui_components/date_picker/super_date_picker/pretty_interval.js
+index 1fde80a..550f5ef 100644
+--- a/node_modules/@elastic/eui/es/eui_components/date_picker/super_date_picker/pretty_interval.js
++++ b/node_modules/@elastic/eui/es/eui_components/date_picker/super_date_picker/pretty_interval.js
+@@ -38,18 +38,18 @@ export var prettyInterval = function prettyInterval(isPaused, intervalInMs) {
+     return 'Off';
+   } else if (intervalInMs < MS_IN_MINUTE) {
+     var intervalInSeconds = Math.round(intervalInMs / MS_IN_SECOND);
+-    units = intervalInSeconds > 1 ? 'seconds' : 'second';
++    units = intervalInSeconds > 1 ? 'sekunder' : 'sekund';
+     return "".concat(intervalInSeconds, " ").concat(units);
+   } else if (intervalInMs < MS_IN_HOUR) {
+     var intervalInMinutes = Math.round(intervalInMs / MS_IN_MINUTE);
+-    units = intervalInMinutes > 1 ? 'minutes' : 'minute';
++    units = intervalInMinutes > 1 ? 'minuter' : 'minut';
+     return "".concat(intervalInMinutes, " ").concat(units);
+   } else if (intervalInMs < MS_IN_DAY) {
+     var intervalInHours = Math.round(intervalInMs / MS_IN_HOUR);
+-    units = intervalInHours > 1 ? 'hours' : 'hour';
++    units = intervalInHours > 1 ? 'timmar' : 'timme';
+     return "".concat(intervalInHours, " ").concat(units);
+   }
+   var intervalInDays = Math.round(intervalInMs / MS_IN_DAY);
+-  units = intervalInDays > 1 ? 'days' : 'day';
++  units = intervalInDays > 1 ? 'dagar' : 'dag';
+   return "".concat(intervalInDays, " ").concat(units);
+ };
+\ No newline at end of file
+diff --git a/node_modules/@elastic/eui/es/eui_components/date_picker/super_date_picker/quick_select_popover/quick_select.js b/node_modules/@elastic/eui/es/eui_components/date_picker/super_date_picker/quick_select_popover/quick_select.js
+index 750faba..6ff6c6a 100644
+--- a/node_modules/@elastic/eui/es/eui_components/date_picker/super_date_picker/quick_select_popover/quick_select.js
++++ b/node_modules/@elastic/eui/es/eui_components/date_picker/super_date_picker/quick_select_popover/quick_select.js
+@@ -64,15 +64,15 @@ var LAST = 'last';
+ var NEXT = 'next';
+ var timeTenseOptions = [{
+   value: LAST,
+-  text: 'Last'
++  text: 'Sista'
+ }, {
+   value: NEXT,
+-  text: 'Next'
++  text: 'Nästa'
+ }];
+ var timeUnitsOptions = keysOf(timeUnits).map(function (key) {
+   return {
+     value: key,
+-    text: "".concat(timeUnits[key], "s")
++    text: "".concat(timeUnits[key], "")
+   };
+ });
+ export var EuiQuickSelect = /*#__PURE__*/function (_Component) {
+diff --git a/node_modules/@elastic/eui/es/eui_components/date_picker/super_date_picker/relative_options.js b/node_modules/@elastic/eui/es/eui_components/date_picker/super_date_picker/relative_options.js
+index 68fb06a..15f2a8e 100644
+--- a/node_modules/@elastic/eui/es/eui_components/date_picker/super_date_picker/relative_options.js
++++ b/node_modules/@elastic/eui/es/eui_components/date_picker/super_date_picker/relative_options.js
+@@ -29,46 +29,46 @@
+  */
+ 
+ export var relativeOptions = [{
+-  text: 'Seconds ago',
++  text: 'Sekunder sedan',
+   value: 's'
+ }, {
+-  text: 'Minutes ago',
++  text: 'Minuter sedan',
+   value: 'm'
+ }, {
+-  text: 'Hours ago',
++  text: 'Timmar sedan',
+   value: 'h'
+ }, {
+-  text: 'Days ago',
++  text: 'Dagar sedan',
+   value: 'd'
+ }, {
+-  text: 'Weeks ago',
++  text: 'Veckor sedan',
+   value: 'w'
+ }, {
+-  text: 'Months ago',
++  text: 'Månader sedan',
+   value: 'M'
+ }, {
+-  text: 'Years ago',
++  text: 'År sedan',
+   value: 'y'
+ }, {
+-  text: 'Seconds from now',
++  text: 'Sekunder från nu',
+   value: 's+'
+ }, {
+-  text: 'Minutes from now',
++  text: 'Minuter från nu',
+   value: 'm+'
+ }, {
+-  text: 'Hours from now',
++  text: 'Timmar från nu',
+   value: 'h+'
+ }, {
+-  text: 'Days from now',
++  text: 'Dagar från nu',
+   value: 'd+'
+ }, {
+-  text: 'Weeks from now',
++  text: 'Veckor från nu',
+   value: 'w+'
+ }, {
+-  text: 'Months from now',
++  text: 'Månader från nu',
+   value: 'M+'
+ }, {
+-  text: 'Years from now',
++  text: 'År från nu',
+   value: 'y+'
+ }];
+ var timeUnitIds = relativeOptions.map(function (_ref) {
+diff --git a/node_modules/@elastic/eui/es/eui_components/date_picker/super_date_picker/time_units.js b/node_modules/@elastic/eui/es/eui_components/date_picker/super_date_picker/time_units.js
+index 38077f7..38fc9e4 100644
+--- a/node_modules/@elastic/eui/es/eui_components/date_picker/super_date_picker/time_units.js
++++ b/node_modules/@elastic/eui/es/eui_components/date_picker/super_date_picker/time_units.js
+@@ -29,20 +29,20 @@
+  */
+ 
+ export var timeUnits = {
+-  s: 'second',
+-  m: 'minute',
+-  h: 'hour',
+-  d: 'day',
+-  w: 'week',
+-  M: 'month',
+-  y: 'year'
++  s: 'sekund',
++  m: 'minut',
++  h: 'timme',
++  d: 'dag',
++  w: 'vecka',
++  M: 'månad',
++  y: 'år'
+ };
+ export var timeUnitsPlural = {
+-  s: 'seconds',
+-  m: 'minutes',
+-  h: 'hours',
+-  d: 'days',
+-  w: 'weeks',
+-  M: 'months',
+-  y: 'years'
++  s: 'sekunder',
++  m: 'minuter',
++  h: 'timmar',
++  d: 'dagar',
++  w: 'veckor',
++  M: 'månader',
++  y: 'år'
+ };
+\ No newline at end of file
+diff --git a/node_modules/@elastic/eui/lib/components/date_picker/super_date_picker/date_popover/absolute_tab.js b/node_modules/@elastic/eui/lib/components/date_picker/super_date_picker/date_popover/absolute_tab.js
+index fbedd9f..b88b532 100644
+--- a/node_modules/@elastic/eui/lib/components/date_picker/super_date_picker/date_popover/absolute_tab.js
++++ b/node_modules/@elastic/eui/lib/components/date_picker/super_date_picker/date_popover/absolute_tab.js
+@@ -141,7 +141,7 @@ var OuiAbsoluteTab = /*#__PURE__*/function (_Component) {
+         value: textInputValue,
+         onChange: this.handleTextChange,
+         "data-test-subj": 'superDatePickerAbsoluteDateInput',
+-        prepend: /*#__PURE__*/_react.default.createElement(_form.OuiFormLabel, null, sentenceCasedPosition, " date")
++        prepend: /*#__PURE__*/_react.default.createElement(_form.OuiFormLabel, null, sentenceCasedPosition, " datum")
+       })));
+     }
+   }]);
+diff --git a/node_modules/@elastic/eui/lib/components/date_picker/super_date_picker/date_popover/date_popover_content.js b/node_modules/@elastic/eui/lib/components/date_picker/super_date_picker/date_popover/date_popover_content.js
+index 2c8b282..c2baba4 100644
+--- a/node_modules/@elastic/eui/lib/components/date_picker/super_date_picker/date_popover/date_popover_content.js
++++ b/node_modules/@elastic/eui/lib/components/date_picker/super_date_picker/date_popover/date_popover_content.js
+@@ -72,10 +72,10 @@ var OuiDatePopoverContent = function OuiDatePopoverContent(_ref) {
+         break;
+     }
+   };
+-  var ariaLabel = "".concat(position === 'start' ? 'Start' : 'End', " date:");
++  var ariaLabel = "".concat(position === 'start' ? 'Start' : 'Slut', " datum:");
+   var renderTabs = [{
+     id: _date_modes.DATE_MODES.ABSOLUTE,
+-    name: 'Absolute',
++    name: 'Absolut',
+     content: /*#__PURE__*/_react.default.createElement(_absolute_tab.OuiAbsoluteTab, {
+       dateFormat: dateFormat,
+       timeFormat: timeFormat,
+@@ -87,10 +87,10 @@ var OuiDatePopoverContent = function OuiDatePopoverContent(_ref) {
+       utcOffset: utcOffset
+     }),
+     'data-test-subj': 'superDatePickerAbsoluteTab',
+-    'aria-label': "".concat(ariaLabel, " Absolute")
++    'aria-label': "".concat(ariaLabel, " Absolut")
+   }, {
+     id: _date_modes.DATE_MODES.RELATIVE,
+-    name: 'Relative',
++    name: 'Relativ',
+     content: /*#__PURE__*/_react.default.createElement(_relative_tab.OuiRelativeTab, {
+       dateFormat: dateFormat,
+       locale: locale,
+@@ -100,24 +100,24 @@ var OuiDatePopoverContent = function OuiDatePopoverContent(_ref) {
+       position: position
+     }),
+     'data-test-subj': 'superDatePickerRelativeTab',
+-    'aria-label': "".concat(ariaLabel, " Relative")
++    'aria-label': "".concat(ariaLabel, " Relativ")
+   }, {
+     id: _date_modes.DATE_MODES.NOW,
+-    name: 'Now',
++    name: 'Nu',
+     content: /*#__PURE__*/_react.default.createElement(_text.OuiText, {
+       size: "s",
+       color: "subdued",
+       className: "ouiDatePopoverContent__padded--large"
+-    }, /*#__PURE__*/_react.default.createElement("p", null, "Setting the time to \"now\" means that on every refresh this time will be set to the time of the refresh."), /*#__PURE__*/_react.default.createElement(_button.OuiButton, {
++    }, /*#__PURE__*/_react.default.createElement("p", null, "Inställning av tiden till \"nu\" innebär att vid varje uppdatering kommer denna tid att sättas till uppdateringens tid."), /*#__PURE__*/_react.default.createElement(_button.OuiButton, {
+       "data-test-subj": "superDatePickerNowButton",
+       onClick: function onClick() {
+         onChange('now');
+       },
+       fullWidth: true,
+       size: "s"
+-    }, "Set ", position, " date and time to now")),
++    }, "Sätt ", position, " datum och tid till nu")),
+     'data-test-subj': 'superDatePickerNowTab',
+-    'aria-label': "".concat(ariaLabel, " Now")
++    'aria-label': "".concat(ariaLabel, " Nu")
+   }];
+   var initialSelectedTab = renderTabs.find(function (tab) {
+     return tab.id === (0, _date_modes.getDateMode)(value);
+diff --git a/node_modules/@elastic/eui/lib/components/date_picker/super_date_picker/pretty_duration.js b/node_modules/@elastic/eui/lib/components/date_picker/super_date_picker/pretty_duration.js
+index de92879..457ab2b 100644
+--- a/node_modules/@elastic/eui/lib/components/date_picker/super_date_picker/pretty_duration.js
++++ b/node_modules/@elastic/eui/lib/components/date_picker/super_date_picker/pretty_duration.js
+@@ -49,35 +49,35 @@ var ISO_FORMAT = 'YYYY-MM-DDTHH:mm:ss.SSSZ';
+ var commonDurationRanges = [{
+   start: 'now/d',
+   end: 'now/d',
+-  label: 'Today'
++  label: 'Idag'
+ }, {
+   start: 'now/w',
+   end: 'now/w',
+-  label: 'This week'
++  label: 'Denna veckan'
+ }, {
+   start: 'now/M',
+   end: 'now/M',
+-  label: 'This month'
++  label: 'Denna månaden'
+ }, {
+   start: 'now/y',
+   end: 'now/y',
+-  label: 'This year'
++  label: 'Detta året'
+ }, {
+   start: 'now-1d/d',
+   end: 'now-1d/d',
+-  label: 'Yesterday'
++  label: 'Igår'
+ }, {
+   start: 'now/w',
+   end: 'now',
+-  label: 'Week to date'
++  label: 'Vecka till nu'
+ }, {
+   start: 'now/M',
+   end: 'now',
+-  label: 'Month to date'
++  label: 'Månad till nu'
+ }, {
+   start: 'now/y',
+   end: 'now',
+-  label: 'Year to date'
++  label: 'År till nu'
+ }];
+ exports.commonDurationRanges = commonDurationRanges;
+ function cantLookup(timeFrom, timeTo, dateFormat) {
+@@ -94,13 +94,13 @@ function isRelativeToNow(timeFrom, timeTo) {
+ }
+ function formatTimeString(timeString, dateFormat) {
+   var roundUp = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+-  var locale = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'en';
++  var locale = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'sv';
+   var timeAsMoment = (0, _moment.default)(timeString, ISO_FORMAT, true);
+   if (timeAsMoment.isValid()) {
+     return timeAsMoment.locale(locale).format(dateFormat);
+   }
+   if (timeString === 'now') {
+-    return 'now';
++    return 'nu';
+   }
+   var tryParse = _datemath.default.parse(timeString, {
+     roundUp: roundUp
+@@ -125,10 +125,10 @@ function prettyDuration(timeFrom, timeTo) {
+     var timeTense;
+     var relativeParts;
+     if ((0, _date_modes.getDateMode)(timeTo) === _date_modes.DATE_MODES.NOW) {
+-      timeTense = 'Last';
++      timeTense = 'Sista';
+       relativeParts = (0, _relative_utils.parseRelativeParts)(timeFrom);
+     } else {
+-      timeTense = 'Next';
++      timeTense = 'Nästa';
+       relativeParts = (0, _relative_utils.parseRelativeParts)(timeTo);
+     }
+     var countTimeUnit = relativeParts.unit.substring(0, 1);
+diff --git a/node_modules/@elastic/eui/lib/components/date_picker/super_date_picker/pretty_interval.js b/node_modules/@elastic/eui/lib/components/date_picker/super_date_picker/pretty_interval.js
+index 3313a73..311da64 100644
+--- a/node_modules/@elastic/eui/lib/components/date_picker/super_date_picker/pretty_interval.js
++++ b/node_modules/@elastic/eui/lib/components/date_picker/super_date_picker/pretty_interval.js
+@@ -44,19 +44,19 @@ var prettyInterval = function prettyInterval(isPaused, intervalInMs) {
+     return 'Off';
+   } else if (intervalInMs < MS_IN_MINUTE) {
+     var intervalInSeconds = Math.round(intervalInMs / MS_IN_SECOND);
+-    units = intervalInSeconds > 1 ? 'seconds' : 'second';
++    units = intervalInSeconds > 1 ? 'sekunder' : 'sekund';
+     return "".concat(intervalInSeconds, " ").concat(units);
+   } else if (intervalInMs < MS_IN_HOUR) {
+     var intervalInMinutes = Math.round(intervalInMs / MS_IN_MINUTE);
+-    units = intervalInMinutes > 1 ? 'minutes' : 'minute';
++    units = intervalInMinutes > 1 ? 'minuter' : 'minut';
+     return "".concat(intervalInMinutes, " ").concat(units);
+   } else if (intervalInMs < MS_IN_DAY) {
+     var intervalInHours = Math.round(intervalInMs / MS_IN_HOUR);
+-    units = intervalInHours > 1 ? 'hours' : 'hour';
++    units = intervalInHours > 1 ? 'timmar' : 'timme';
+     return "".concat(intervalInHours, " ").concat(units);
+   }
+   var intervalInDays = Math.round(intervalInMs / MS_IN_DAY);
+-  units = intervalInDays > 1 ? 'days' : 'day';
++  units = intervalInDays > 1 ? 'dagar' : 'dag';
+   return "".concat(intervalInDays, " ").concat(units);
+ };
+ exports.prettyInterval = prettyInterval;
+\ No newline at end of file
+diff --git a/node_modules/@elastic/eui/lib/components/date_picker/super_date_picker/quick_select_popover/quick_select.js b/node_modules/@elastic/eui/lib/components/date_picker/super_date_picker/quick_select_popover/quick_select.js
+index 148989f..74df5d6 100644
+--- a/node_modules/@elastic/eui/lib/components/date_picker/super_date_picker/quick_select_popover/quick_select.js
++++ b/node_modules/@elastic/eui/lib/components/date_picker/super_date_picker/quick_select_popover/quick_select.js
+@@ -75,15 +75,15 @@ var LAST = 'last';
+ var NEXT = 'next';
+ var timeTenseOptions = [{
+   value: LAST,
+-  text: 'Last'
++  text: 'Sista'
+ }, {
+   value: NEXT,
+-  text: 'Next'
++  text: 'Nästa'
+ }];
+ var timeUnitsOptions = (0, _common.keysOf)(_time_units.timeUnits).map(function (key) {
+   return {
+     value: key,
+-    text: "".concat(_time_units.timeUnits[key], "s")
++    text: "".concat(_time_units.timeUnits[key], "")
+   };
+ });
+ var OuiQuickSelect = /*#__PURE__*/function (_Component) {
+diff --git a/node_modules/@elastic/eui/lib/components/date_picker/super_date_picker/relative_options.js b/node_modules/@elastic/eui/lib/components/date_picker/super_date_picker/relative_options.js
+index b84e78b..257e660 100644
+--- a/node_modules/@elastic/eui/lib/components/date_picker/super_date_picker/relative_options.js
++++ b/node_modules/@elastic/eui/lib/components/date_picker/super_date_picker/relative_options.js
+@@ -35,46 +35,46 @@ exports.relativeUnitsFromLargestToSmallest = exports.relativeOptions = void 0;
+  */
+ 
+ var relativeOptions = [{
+-  text: 'Seconds ago',
++  text: 'Sekunder sedan',
+   value: 's'
+ }, {
+-  text: 'Minutes ago',
++  text: 'Minuter sedan',
+   value: 'm'
+ }, {
+-  text: 'Hours ago',
++  text: 'Timmar sedan',
+   value: 'h'
+ }, {
+-  text: 'Days ago',
++  text: 'Dagar sedan',
+   value: 'd'
+ }, {
+-  text: 'Weeks ago',
++  text: 'Veckor sedan',
+   value: 'w'
+ }, {
+-  text: 'Months ago',
++  text: 'Månader sedan',
+   value: 'M'
+ }, {
+-  text: 'Years ago',
++  text: 'År sedan',
+   value: 'y'
+ }, {
+-  text: 'Seconds from now',
++  text: 'Sekunder från nu',
+   value: 's+'
+ }, {
+-  text: 'Minutes from now',
++  text: 'Minuter från nu',
+   value: 'm+'
+ }, {
+-  text: 'Hours from now',
++  text: 'Timmar från nu',
+   value: 'h+'
+ }, {
+-  text: 'Days from now',
++  text: 'Dagar från nu',
+   value: 'd+'
+ }, {
+-  text: 'Weeks from now',
++  text: 'Veckor från nu',
+   value: 'w+'
+ }, {
+-  text: 'Months from now',
++  text: 'Månader från nu',
+   value: 'M+'
+ }, {
+-  text: 'Years from now',
++  text: 'År från nu',
+   value: 'y+'
+ }];
+ exports.relativeOptions = relativeOptions;
+diff --git a/node_modules/@elastic/eui/lib/components/date_picker/super_date_picker/time_units.js b/node_modules/@elastic/eui/lib/components/date_picker/super_date_picker/time_units.js
+index 53d78db..14273eb 100644
+--- a/node_modules/@elastic/eui/lib/components/date_picker/super_date_picker/time_units.js
++++ b/node_modules/@elastic/eui/lib/components/date_picker/super_date_picker/time_units.js
+@@ -35,22 +35,22 @@ exports.timeUnitsPlural = exports.timeUnits = void 0;
+  */
+ 
+ var timeUnits = {
+-  s: 'second',
+-  m: 'minute',
+-  h: 'hour',
+-  d: 'day',
+-  w: 'week',
+-  M: 'month',
+-  y: 'year'
++  s: 'sekund',
++  m: 'minut',
++  h: 'timme',
++  d: 'dag',
++  w: 'vecka',
++  M: 'månad',
++  y: 'år'
+ };
+ exports.timeUnits = timeUnits;
+ var timeUnitsPlural = {
+-  s: 'seconds',
+-  m: 'minutes',
+-  h: 'hours',
+-  d: 'days',
+-  w: 'weeks',
+-  M: 'months',
+-  y: 'years'
++  s: 'sekunder',
++  m: 'minuter',
++  h: 'timmar',
++  d: 'dagar',
++  w: 'veckor',
++  M: 'månader',
++  y: 'år'
+ };
+ exports.timeUnitsPlural = timeUnitsPlural;
+\ No newline at end of file
+diff --git a/node_modules/@elastic/eui/lib/eui_components/date_picker/super_date_picker/date_popover/absolute_tab.js b/node_modules/@elastic/eui/lib/eui_components/date_picker/super_date_picker/date_popover/absolute_tab.js
+index 7dcc25c..8c9b160 100644
+--- a/node_modules/@elastic/eui/lib/eui_components/date_picker/super_date_picker/date_popover/absolute_tab.js
++++ b/node_modules/@elastic/eui/lib/eui_components/date_picker/super_date_picker/date_popover/absolute_tab.js
+@@ -134,7 +134,7 @@ var EuiAbsoluteTab = /*#__PURE__*/function (_Component) {
+         value: textInputValue,
+         onChange: this.handleTextChange,
+         "data-test-subj": 'superDatePickerAbsoluteDateInput',
+-        prepend: /*#__PURE__*/_react.default.createElement(_form.EuiFormLabel, null, sentenceCasedPosition, " date")
++        prepend: /*#__PURE__*/_react.default.createElement(_form.EuiFormLabel, null, sentenceCasedPosition, " datum")
+       })));
+     }
+   }]);
+diff --git a/node_modules/@elastic/eui/lib/eui_components/date_picker/super_date_picker/date_popover/date_popover_content.js b/node_modules/@elastic/eui/lib/eui_components/date_picker/super_date_picker/date_popover/date_popover_content.js
+index fe7bb0e..9e51015 100644
+--- a/node_modules/@elastic/eui/lib/eui_components/date_picker/super_date_picker/date_popover/date_popover_content.js
++++ b/node_modules/@elastic/eui/lib/eui_components/date_picker/super_date_picker/date_popover/date_popover_content.js
+@@ -65,7 +65,7 @@ var EuiDatePopoverContent = function EuiDatePopoverContent(_ref) {
+         break;
+     }
+   };
+-  var ariaLabel = "".concat(position === 'start' ? 'Start' : 'End', " date:");
++  var ariaLabel = "".concat(position === 'start' ? 'Start' : 'Slut', " datum:");
+   var renderTabs = [{
+     id: _date_modes.DATE_MODES.ABSOLUTE,
+     name: 'Absolute',
+@@ -80,10 +80,10 @@ var EuiDatePopoverContent = function EuiDatePopoverContent(_ref) {
+       utcOffset: utcOffset
+     }),
+     'data-test-subj': 'superDatePickerAbsoluteTab',
+-    'aria-label': "".concat(ariaLabel, " Absolute")
++    'aria-label': "".concat(ariaLabel, " Absolut")
+   }, {
+     id: _date_modes.DATE_MODES.RELATIVE,
+-    name: 'Relative',
++    name: 'Relativ',
+     content: /*#__PURE__*/_react.default.createElement(_relative_tab.EuiRelativeTab, {
+       dateFormat: dateFormat,
+       locale: locale,
+@@ -93,7 +93,7 @@ var EuiDatePopoverContent = function EuiDatePopoverContent(_ref) {
+       position: position
+     }),
+     'data-test-subj': 'superDatePickerRelativeTab',
+-    'aria-label': "".concat(ariaLabel, " Relative")
++    'aria-label': "".concat(ariaLabel, " Relativ")
+   }, {
+     id: _date_modes.DATE_MODES.NOW,
+     name: 'Now',
+@@ -101,16 +101,16 @@ var EuiDatePopoverContent = function EuiDatePopoverContent(_ref) {
+       size: "s",
+       color: "subdued",
+       className: "euiDatePopoverContent__padded--large"
+-    }, /*#__PURE__*/_react.default.createElement("p", null, "Setting the time to \"now\" means that on every refresh this time will be set to the time of the refresh."), /*#__PURE__*/_react.default.createElement(_button.EuiButton, {
++    }, /*#__PURE__*/_react.default.createElement("p", null, "Att ställa in tiden till \"nu\" innebär att vid varje uppdatering kommer denna tid att sättas till uppdateringens tid."), /*#__PURE__*/_react.default.createElement(_button.EuiButton, {
+       "data-test-subj": "superDatePickerNowButton",
+       onClick: function onClick() {
+         onChange('now');
+       },
+       fullWidth: true,
+       size: "s"
+-    }, "Set ", position, " date and time to now")),
++    }, "Sätt ", position, " datum och tid till nu")),
+     'data-test-subj': 'superDatePickerNowTab',
+-    'aria-label': "".concat(ariaLabel, " Now")
++    'aria-label': "".concat(ariaLabel, " Nu")
+   }];
+   var initialSelectedTab = renderTabs.find(function (tab) {
+     return tab.id === (0, _date_modes.getDateMode)(value);
+diff --git a/node_modules/@elastic/eui/lib/eui_components/date_picker/super_date_picker/pretty_duration.js b/node_modules/@elastic/eui/lib/eui_components/date_picker/super_date_picker/pretty_duration.js
+index de92879..457ab2b 100644
+--- a/node_modules/@elastic/eui/lib/eui_components/date_picker/super_date_picker/pretty_duration.js
++++ b/node_modules/@elastic/eui/lib/eui_components/date_picker/super_date_picker/pretty_duration.js
+@@ -49,35 +49,35 @@ var ISO_FORMAT = 'YYYY-MM-DDTHH:mm:ss.SSSZ';
+ var commonDurationRanges = [{
+   start: 'now/d',
+   end: 'now/d',
+-  label: 'Today'
++  label: 'Idag'
+ }, {
+   start: 'now/w',
+   end: 'now/w',
+-  label: 'This week'
++  label: 'Denna veckan'
+ }, {
+   start: 'now/M',
+   end: 'now/M',
+-  label: 'This month'
++  label: 'Denna månaden'
+ }, {
+   start: 'now/y',
+   end: 'now/y',
+-  label: 'This year'
++  label: 'Detta året'
+ }, {
+   start: 'now-1d/d',
+   end: 'now-1d/d',
+-  label: 'Yesterday'
++  label: 'Igår'
+ }, {
+   start: 'now/w',
+   end: 'now',
+-  label: 'Week to date'
++  label: 'Vecka till nu'
+ }, {
+   start: 'now/M',
+   end: 'now',
+-  label: 'Month to date'
++  label: 'Månad till nu'
+ }, {
+   start: 'now/y',
+   end: 'now',
+-  label: 'Year to date'
++  label: 'År till nu'
+ }];
+ exports.commonDurationRanges = commonDurationRanges;
+ function cantLookup(timeFrom, timeTo, dateFormat) {
+@@ -94,13 +94,13 @@ function isRelativeToNow(timeFrom, timeTo) {
+ }
+ function formatTimeString(timeString, dateFormat) {
+   var roundUp = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+-  var locale = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'en';
++  var locale = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'sv';
+   var timeAsMoment = (0, _moment.default)(timeString, ISO_FORMAT, true);
+   if (timeAsMoment.isValid()) {
+     return timeAsMoment.locale(locale).format(dateFormat);
+   }
+   if (timeString === 'now') {
+-    return 'now';
++    return 'nu';
+   }
+   var tryParse = _datemath.default.parse(timeString, {
+     roundUp: roundUp
+@@ -125,10 +125,10 @@ function prettyDuration(timeFrom, timeTo) {
+     var timeTense;
+     var relativeParts;
+     if ((0, _date_modes.getDateMode)(timeTo) === _date_modes.DATE_MODES.NOW) {
+-      timeTense = 'Last';
++      timeTense = 'Sista';
+       relativeParts = (0, _relative_utils.parseRelativeParts)(timeFrom);
+     } else {
+-      timeTense = 'Next';
++      timeTense = 'Nästa';
+       relativeParts = (0, _relative_utils.parseRelativeParts)(timeTo);
+     }
+     var countTimeUnit = relativeParts.unit.substring(0, 1);
+diff --git a/node_modules/@elastic/eui/lib/eui_components/date_picker/super_date_picker/pretty_interval.js b/node_modules/@elastic/eui/lib/eui_components/date_picker/super_date_picker/pretty_interval.js
+index 3313a73..311da64 100644
+--- a/node_modules/@elastic/eui/lib/eui_components/date_picker/super_date_picker/pretty_interval.js
++++ b/node_modules/@elastic/eui/lib/eui_components/date_picker/super_date_picker/pretty_interval.js
+@@ -44,19 +44,19 @@ var prettyInterval = function prettyInterval(isPaused, intervalInMs) {
+     return 'Off';
+   } else if (intervalInMs < MS_IN_MINUTE) {
+     var intervalInSeconds = Math.round(intervalInMs / MS_IN_SECOND);
+-    units = intervalInSeconds > 1 ? 'seconds' : 'second';
++    units = intervalInSeconds > 1 ? 'sekunder' : 'sekund';
+     return "".concat(intervalInSeconds, " ").concat(units);
+   } else if (intervalInMs < MS_IN_HOUR) {
+     var intervalInMinutes = Math.round(intervalInMs / MS_IN_MINUTE);
+-    units = intervalInMinutes > 1 ? 'minutes' : 'minute';
++    units = intervalInMinutes > 1 ? 'minuter' : 'minut';
+     return "".concat(intervalInMinutes, " ").concat(units);
+   } else if (intervalInMs < MS_IN_DAY) {
+     var intervalInHours = Math.round(intervalInMs / MS_IN_HOUR);
+-    units = intervalInHours > 1 ? 'hours' : 'hour';
++    units = intervalInHours > 1 ? 'timmar' : 'timme';
+     return "".concat(intervalInHours, " ").concat(units);
+   }
+   var intervalInDays = Math.round(intervalInMs / MS_IN_DAY);
+-  units = intervalInDays > 1 ? 'days' : 'day';
++  units = intervalInDays > 1 ? 'dagar' : 'dag';
+   return "".concat(intervalInDays, " ").concat(units);
+ };
+ exports.prettyInterval = prettyInterval;
+\ No newline at end of file
+diff --git a/node_modules/@elastic/eui/lib/eui_components/date_picker/super_date_picker/quick_select_popover/quick_select.js b/node_modules/@elastic/eui/lib/eui_components/date_picker/super_date_picker/quick_select_popover/quick_select.js
+index 6b32408..c0948b8 100644
+--- a/node_modules/@elastic/eui/lib/eui_components/date_picker/super_date_picker/quick_select_popover/quick_select.js
++++ b/node_modules/@elastic/eui/lib/eui_components/date_picker/super_date_picker/quick_select_popover/quick_select.js
+@@ -68,15 +68,15 @@ var LAST = 'last';
+ var NEXT = 'next';
+ var timeTenseOptions = [{
+   value: LAST,
+-  text: 'Last'
++  text: 'Sista'
+ }, {
+   value: NEXT,
+-  text: 'Next'
++  text: 'Nästa'
+ }];
+ var timeUnitsOptions = (0, _common.keysOf)(_time_units.timeUnits).map(function (key) {
+   return {
+     value: key,
+-    text: "".concat(_time_units.timeUnits[key], "s")
++    text: "".concat(_time_units.timeUnits[key], "")
+   };
+ });
+ var EuiQuickSelect = /*#__PURE__*/function (_Component) {
+diff --git a/node_modules/@elastic/eui/lib/eui_components/date_picker/super_date_picker/relative_options.js b/node_modules/@elastic/eui/lib/eui_components/date_picker/super_date_picker/relative_options.js
+index b84e78b..257e660 100644
+--- a/node_modules/@elastic/eui/lib/eui_components/date_picker/super_date_picker/relative_options.js
++++ b/node_modules/@elastic/eui/lib/eui_components/date_picker/super_date_picker/relative_options.js
+@@ -35,46 +35,46 @@ exports.relativeUnitsFromLargestToSmallest = exports.relativeOptions = void 0;
+  */
+ 
+ var relativeOptions = [{
+-  text: 'Seconds ago',
++  text: 'Sekunder sedan',
+   value: 's'
+ }, {
+-  text: 'Minutes ago',
++  text: 'Minuter sedan',
+   value: 'm'
+ }, {
+-  text: 'Hours ago',
++  text: 'Timmar sedan',
+   value: 'h'
+ }, {
+-  text: 'Days ago',
++  text: 'Dagar sedan',
+   value: 'd'
+ }, {
+-  text: 'Weeks ago',
++  text: 'Veckor sedan',
+   value: 'w'
+ }, {
+-  text: 'Months ago',
++  text: 'Månader sedan',
+   value: 'M'
+ }, {
+-  text: 'Years ago',
++  text: 'År sedan',
+   value: 'y'
+ }, {
+-  text: 'Seconds from now',
++  text: 'Sekunder från nu',
+   value: 's+'
+ }, {
+-  text: 'Minutes from now',
++  text: 'Minuter från nu',
+   value: 'm+'
+ }, {
+-  text: 'Hours from now',
++  text: 'Timmar från nu',
+   value: 'h+'
+ }, {
+-  text: 'Days from now',
++  text: 'Dagar från nu',
+   value: 'd+'
+ }, {
+-  text: 'Weeks from now',
++  text: 'Veckor från nu',
+   value: 'w+'
+ }, {
+-  text: 'Months from now',
++  text: 'Månader från nu',
+   value: 'M+'
+ }, {
+-  text: 'Years from now',
++  text: 'År från nu',
+   value: 'y+'
+ }];
+ exports.relativeOptions = relativeOptions;
+diff --git a/node_modules/@elastic/eui/lib/eui_components/date_picker/super_date_picker/time_units.js b/node_modules/@elastic/eui/lib/eui_components/date_picker/super_date_picker/time_units.js
+index 53d78db..14273eb 100644
+--- a/node_modules/@elastic/eui/lib/eui_components/date_picker/super_date_picker/time_units.js
++++ b/node_modules/@elastic/eui/lib/eui_components/date_picker/super_date_picker/time_units.js
+@@ -35,22 +35,22 @@ exports.timeUnitsPlural = exports.timeUnits = void 0;
+  */
+ 
+ var timeUnits = {
+-  s: 'second',
+-  m: 'minute',
+-  h: 'hour',
+-  d: 'day',
+-  w: 'week',
+-  M: 'month',
+-  y: 'year'
++  s: 'sekund',
++  m: 'minut',
++  h: 'timme',
++  d: 'dag',
++  w: 'vecka',
++  M: 'månad',
++  y: 'år'
+ };
+ exports.timeUnits = timeUnits;
+ var timeUnitsPlural = {
+-  s: 'seconds',
+-  m: 'minutes',
+-  h: 'hours',
+-  d: 'days',
+-  w: 'weeks',
+-  M: 'months',
+-  y: 'years'
++  s: 'sekunder',
++  m: 'minuter',
++  h: 'timmar',
++  d: 'dagar',
++  w: 'veckor',
++  M: 'månader',
++  y: 'år'
+ };
+ exports.timeUnitsPlural = timeUnitsPlural;
+\ No newline at end of file
+diff --git a/node_modules/@elastic/eui/oui.d.ts b/node_modules/@elastic/eui/oui.d.ts
+index 2bfde32..0b9bfb0 100644
+--- a/node_modules/@elastic/eui/oui.d.ts
++++ b/node_modules/@elastic/eui/oui.d.ts
+@@ -24343,8 +24343,8 @@ declare module '@opensearch-project/oui/src/components/date_picker/types' {
+ 	}
+ 	export type TimeUnitId = 's' | 'm' | 'h' | 'd' | 'w' | 'M' | 'y';
+ 	export type TimeUnitFromNowId = 's+' | 'm+' | 'h+' | 'd+' | 'w+' | 'M+' | 'y+';
+-	export type TimeUnitLabel = 'second' | 'minute' | 'hour' | 'day' | 'week' | 'month' | 'year';
+-	export type TimeUnitLabelPlural = 'seconds' | 'minutes' | 'hours' | 'days' | 'weeks' | 'months' | 'years';
++	export type TimeUnitLabel = 'sekund' | 'minut' | 'timme' | 'dag' | 'vecka' | 'månad' | 'år';
++	export type TimeUnitLabelPlural = 'sekunder' | 'minuter' | 'timmar' | 'dagar' | 'veckor' | 'månader' | 'år';
+ 	export type AbsoluteDateMode = 'absolute';
+ 	export type RelativeDateMode = 'relative';
+ 	export type NowDateMode = 'now';
+@@ -24418,8 +24418,8 @@ declare module '@opensearch-project/oui/src/eui_components/date_picker/types' {
+ 	}
+ 	export type TimeUnitId = 's' | 'm' | 'h' | 'd' | 'w' | 'M' | 'y';
+ 	export type TimeUnitFromNowId = 's+' | 'm+' | 'h+' | 'd+' | 'w+' | 'M+' | 'y+';
+-	export type TimeUnitLabel = 'second' | 'minute' | 'hour' | 'day' | 'week' | 'month' | 'year';
+-	export type TimeUnitLabelPlural = 'seconds' | 'minutes' | 'hours' | 'days' | 'weeks' | 'months' | 'years';
++	export type TimeUnitLabel = 'sekund' | 'minut' | 'timme' | 'dag' | 'vecka' | 'månad' | 'år';
++	export type TimeUnitLabelPlural = 'sekunder' | 'minuter' | 'timmar' | 'dagar' | 'veckor' | 'månader' | 'år';
+ 	export type AbsoluteDateMode = 'absolute';
+ 	export type RelativeDateMode = 'relative';
+ 	export type NowDateMode = 'now';
+diff --git a/node_modules/@elastic/eui/test-env/components/date_picker/super_date_picker/pretty_duration.js b/node_modules/@elastic/eui/test-env/components/date_picker/super_date_picker/pretty_duration.js
+index da14800..9d274e5 100644
+--- a/node_modules/@elastic/eui/test-env/components/date_picker/super_date_picker/pretty_duration.js
++++ b/node_modules/@elastic/eui/test-env/components/date_picker/super_date_picker/pretty_duration.js
+@@ -49,35 +49,35 @@ var ISO_FORMAT = 'YYYY-MM-DDTHH:mm:ss.SSSZ';
+ var commonDurationRanges = [{
+   start: 'now/d',
+   end: 'now/d',
+-  label: 'Today'
++  label: 'Idag'
+ }, {
+   start: 'now/w',
+   end: 'now/w',
+-  label: 'This week'
++  label: 'Denna veckan'
+ }, {
+   start: 'now/M',
+   end: 'now/M',
+-  label: 'This month'
++  label: 'Denna månaden'
+ }, {
+   start: 'now/y',
+   end: 'now/y',
+-  label: 'This year'
++  label: 'Detta året'
+ }, {
+   start: 'now-1d/d',
+   end: 'now-1d/d',
+-  label: 'Yesterday'
++  label: 'Igår'
+ }, {
+   start: 'now/w',
+   end: 'now',
+-  label: 'Week to date'
++  label: 'Vecka till nu'
+ }, {
+   start: 'now/M',
+   end: 'now',
+-  label: 'Month to date'
++  label: 'Månad till nu'
+ }, {
+   start: 'now/y',
+   end: 'now',
+-  label: 'Year to date'
++  label: 'År till nu'
+ }];
+ exports.commonDurationRanges = commonDurationRanges;
+ function cantLookup(timeFrom, timeTo, dateFormat) {
+diff --git a/node_modules/@elastic/eui/test-env/components/date_picker/super_date_picker/quick_select_popover/quick_select.js b/node_modules/@elastic/eui/test-env/components/date_picker/super_date_picker/quick_select_popover/quick_select.js
+index e7bacdd..7c37bed 100644
+--- a/node_modules/@elastic/eui/test-env/components/date_picker/super_date_picker/quick_select_popover/quick_select.js
++++ b/node_modules/@elastic/eui/test-env/components/date_picker/super_date_picker/quick_select_popover/quick_select.js
+@@ -79,7 +79,7 @@ var timeTenseOptions = [{
+ var timeUnitsOptions = (0, _common.keysOf)(_time_units.timeUnits).map(function (key) {
+   return {
+     value: key,
+-    text: "".concat(_time_units.timeUnits[key], "s")
++    text: "".concat(_time_units.timeUnits[key], "")
+   };
+ });
+ var OuiQuickSelect = /*#__PURE__*/function (_Component) {
+diff --git a/node_modules/@elastic/eui/test-env/eui_components/date_picker/super_date_picker/quick_select_popover/quick_select.js b/node_modules/@elastic/eui/test-env/eui_components/date_picker/super_date_picker/quick_select_popover/quick_select.js
+index 29d68a3..2993576 100644
+--- a/node_modules/@elastic/eui/test-env/eui_components/date_picker/super_date_picker/quick_select_popover/quick_select.js
++++ b/node_modules/@elastic/eui/test-env/eui_components/date_picker/super_date_picker/quick_select_popover/quick_select.js
+@@ -72,7 +72,7 @@ var timeTenseOptions = [{
+ var timeUnitsOptions = (0, _common.keysOf)(_time_units.timeUnits).map(function (key) {
+   return {
+     value: key,
+-    text: "".concat(_time_units.timeUnits[key], "s")
++    text: "".concat(_time_units.timeUnits[key], "")
+   };
+ });
+ var EuiQuickSelect = /*#__PURE__*/function (_Component) {
