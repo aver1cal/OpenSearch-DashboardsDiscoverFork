@@ -216,6 +216,10 @@ export class DashboardPlugin
   private dashboardProviders: { [key: string]: DashboardProvider } = {};
   private dashboardUrlGenerator?: DashboardUrlGenerator;
 
+  private title = i18n.translate('dashboard.title', {
+    defaultMessage: 'Dashboards',
+  });
+
   public setup(
     core: CoreSetup<StartDependencies, DashboardStart>,
     { share, uiActions, embeddable, home, urlForwarding, data, usageCollection }: SetupDependencies
@@ -370,7 +374,7 @@ export class DashboardPlugin
 
     const app: App = {
       id: DashboardConstants.DASHBOARDS_ID,
-      title: 'Dashboards',
+      title: this.title,
       order: 2500,
       workspaceAvailability: WorkspaceAvailability.insideWorkspace,
       euiIconType: 'inputOutput',

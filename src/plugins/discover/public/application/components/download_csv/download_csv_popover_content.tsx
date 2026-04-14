@@ -14,29 +14,33 @@ export interface DiscoverDownloadCsvPopoverContentProps {
   downloadForOption: (option: DownloadCsvFormId) => Promise<void>;
   hitsCount: number;
   rowsCount: number;
+  showMaxOption?: boolean;
 }
 
 export const DiscoverDownloadCsvPopoverContent = ({
   downloadForOption,
   hitsCount,
   rowsCount,
+  showMaxOption,
 }: DiscoverDownloadCsvPopoverContentProps) => {
   const [selectedOption, setSelectedOption] = useState<DownloadCsvFormId>(
     DownloadCsvFormId.Visible
   );
 
-  const { showMaxOption, maxCountString, rowsCountString } = useMemo<{
-    showMaxOption: boolean;
+  const { effectiveShowMaxOption, maxCountString, rowsCountString } = useMemo<{
+    effectiveShowMaxOption: boolean;
     maxCountString: string;
     rowsCountString: string;
   }>(() => {
     const maxCount = Math.min(hitsCount, MAX_DOWNLOAD_CSV_COUNT);
+    // If showMaxOption is explicitly set, use it, otherwise use default logic
+    const defaultShowMax = maxCount > rowsCount;
     return {
-      showMaxOption: maxCount > rowsCount,
+      effectiveShowMaxOption: typeof showMaxOption === 'boolean' ? showMaxOption : defaultShowMax,
       maxCountString: maxCount.toLocaleString(),
       rowsCountString: rowsCount.toLocaleString(),
     };
-  }, [hitsCount, rowsCount]);
+  }, [hitsCount, rowsCount, showMaxOption]);
 
   const downloadOptions = useMemo(() => {
     const options = [
@@ -53,7 +57,7 @@ export const DiscoverDownloadCsvPopoverContent = ({
       },
     ];
 
-    if (showMaxOption) {
+    if (effectiveShowMaxOption) {
       options.push({
         id: DownloadCsvFormId.Max,
         label: (
@@ -68,7 +72,7 @@ export const DiscoverDownloadCsvPopoverContent = ({
     }
 
     return options;
-  }, [maxCountString, rowsCountString, showMaxOption]);
+  }, [maxCountString, rowsCountString, effectiveShowMaxOption]);
 
   return (
     <div className="dscDownloadCsvPopoverContent" data-test-subj="dscDownloadCsvPopoverContent">
@@ -85,7 +89,7 @@ export const DiscoverDownloadCsvPopoverContent = ({
           onChange={setSelectedOption as (option: string) => void}
           idSelected={selectedOption}
         />
-        {showMaxOption && <DiscoverDownloadCsvCallout />}
+        {effectiveShowMaxOption && <DiscoverDownloadCsvCallout />}
         <EuiSmallButton
           data-test-subj="dscDownloadCsvSubmit"
           className="dscDownloadCsvPopoverContent__submit"

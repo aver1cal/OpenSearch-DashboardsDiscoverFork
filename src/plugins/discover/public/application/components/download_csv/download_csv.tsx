@@ -60,6 +60,7 @@ export const DiscoverDownloadCsv = ({ indexPattern, hits, rows }: DiscoverDownlo
         rowsCount={rows?.length || 0}
         hitsCount={hits || 0}
         downloadForOption={handleDownloadCsvForOption}
+        // showMaxOption is undefined, so default logic applies
       />
     </EuiPopover>
   );

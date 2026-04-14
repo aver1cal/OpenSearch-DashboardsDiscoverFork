@@ -49,6 +49,8 @@ const TableRowUI = ({
 
   const tableRow = (
     <tr key={row._id} className={row.isAnchor ? 'osdDocTable__row--highlight' : ''}>
+      {
+        /* Commented out: expand toggle column
       <td data-test-subj="docTableExpandToggleColumn" className="osdDocTableCell__toggleDetails">
         <EuiSmallButtonIcon
           color="text"
@@ -60,6 +62,9 @@ const TableRowUI = ({
           data-test-subj="docTableExpandToggleColumn"
         />
       </td>
+      */
+        <td />
+      }
       {columns.map((colName) => {
         const fieldInfo = indexPattern.fields.getByName(colName);
         const fieldMapping = flattened[colName];
