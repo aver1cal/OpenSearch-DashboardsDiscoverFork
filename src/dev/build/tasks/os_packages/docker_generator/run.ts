@@ -105,26 +105,61 @@ export async function runDockerGenerator(
   // OpenSearch Dashboards docker build
   await linkAsync(resolve(artifactsDir, artifactTarball), resolve(dockerBuildDir, artifactTarball));
 
-  // Copy i18n plugin if it exists
-  const i18nPluginPath = config.resolveFromRepo('plugins/dashboards-i18n/build');
+  // Copy all plugin zip files from plugins/*/build directories
+  const pluginsDir = config.resolveFromRepo('plugins');
+  const pluginZips: string[] = [];
   try {
-    await accessAsync(i18nPluginPath);
-    const { readdir } = await import('fs/promises');
-    const files = await readdir(i18nPluginPath);
-    log.info(`Found files in i18n plugin path: ${files.join(', ')}`);
-    const i18nZip = files.find((f) => f.startsWith('i18nDashboards-') && f.endsWith('.zip'));
-    if (i18nZip) {
-      const { copyFile } = await import('fs/promises');
-      await copyFile(resolve(i18nPluginPath, i18nZip), resolve(dockerBuildDir, i18nZip));
-      scope.i18nPluginZip = i18nZip;
-      log.info(`Copied i18n plugin: ${i18nZip}`);
+    const { readdir, stat, copyFile, access: fsAccess } = await import('fs/promises');
+    const pluginDirs = await readdir(pluginsDir);
+
+    for (const pluginDir of pluginDirs) {
+      const pluginPath = resolve(pluginsDir, pluginDir);
+      const pluginBuildPath = resolve(pluginPath, 'build');
+
+      try {
+        // Check if build directory exists
+        await fsAccess(pluginBuildPath);
+      } catch (e) {
+        // Build directory doesn't exist, try to build the plugin
+        log.info(`Build directory not found for ${pluginDir}, running yarn build...`);
+        try {
+          await exec(log, 'yarn', ['build'], {
+            cwd: pluginPath,
+            level: 'info',
+          });
+          log.info(`Successfully built plugin: ${pluginDir}`);
+        } catch (buildError) {
+          log.warning(`Failed to build plugin ${pluginDir}: ${buildError.message}`);
+          continue;
+        }
+      }
+
+      try {
+        const pluginStat = await stat(pluginBuildPath);
+        if (pluginStat.isDirectory()) {
+          const buildFiles = await readdir(pluginBuildPath);
+          const zipFiles = buildFiles.filter((f) => f.endsWith('.zip'));
+
+          for (const zipFile of zipFiles) {
+            await copyFile(resolve(pluginBuildPath, zipFile), resolve(dockerBuildDir, zipFile));
+            pluginZips.push(zipFile);
+            log.info(`Copied plugin: ${zipFile} from ${pluginDir}`);
+          }
+        }
+      } catch (e) {
+        log.warning(`Error processing build directory for ${pluginDir}: ${e.message}`);
+        continue;
+      }
+    }
+
+    if (pluginZips.length > 0) {
+      scope.pluginZips = pluginZips;
+      log.info(`Total plugins copied: ${pluginZips.length}`);
     } else {
-      log.warning(`No i18n zip file found matching pattern in ${i18nPluginPath}`);
+      log.warning('No plugin zip files found in any plugins/*/build directories');
     }
   } catch (e) {
-    log.warning(
-      `i18n plugin not found, skipping. Error: ${e.message}, Path checked: ${i18nPluginPath}`
-    );
+    log.warning(`Error scanning plugins directory: ${e.message}, Path checked: ${pluginsDir}`);
   }
 
   // Write all the needed docker config files

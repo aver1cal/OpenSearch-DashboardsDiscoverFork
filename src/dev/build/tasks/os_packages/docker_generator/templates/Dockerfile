@@ -127,19 +127,21 @@ RUN mkdir /licenses && \
     cp LICENSE.txt /licenses/LICENSE
 {{/ubi}}
 
-{{#i18nPluginZip}}
-# Copy and install i18n plugin if available
-COPY --chown=1000:0 {{i18nPluginZip}} /tmp/
+{{#pluginZips}}
+# Copy and install custom plugins from plugins/*/build directories
+{{#.}}
+COPY --chown=1000:0 {{.}} /tmp/
+{{/.}}
 
 USER opensearch-dashboards
 
-RUN ./bin/opensearch-dashboards-plugin install file:///tmp/{{i18nPluginZip}}
-{{/i18nPluginZip}}
-
-USER opensearch-dashboards
+{{#.}}
+RUN ./bin/opensearch-dashboards-plugin install file:///tmp/{{.}}
+{{/.}}
+{{/pluginZips}}
 
 # Install OpenSearch Dashboards plugins as non-root user
-RUN for p in alertingDashboards anomalyDetectionDashboards assistantDashboards customImportMapDashboards indexManagementDashboards mlCommonsDashboards notificationsDashboards observabilityDashboards queryWorkbenchDashboards reportsDashboards searchRelevanceDashboards securityAnalyticsDashboards securityDashboards; do \
+RUN for p in assistantDashboards notificationsDashboards; do \
       ./bin/opensearch-dashboards-plugin install "$p"; \
     done
 
